@@ -3,6 +3,21 @@
 --  A executer APRES schema.sql
 -- ============================================================
 
+-- Garde-fou : message clair si schema.sql n'a pas encore ete execute.
+do $$
+declare
+  t text;
+begin
+  foreach t in array array[
+    'actualites', 'demarches', 'fokontany', 'aides_sociales',
+    'transport_lignes', 'emplois', 'services_municipaux', 'evenements', 'fiangonana'
+  ] loop
+    if to_regclass('public.' || t) is null then
+      raise exception 'Table % introuvable : executez schema.sql avant seed.sql.', t;
+    end if;
+  end loop;
+end $$;
+
 truncate actualites, demarches, fokontany, aides_sociales,
   transport_lignes, emplois, services_municipaux, evenements, fiangonana
   restart identity cascade;

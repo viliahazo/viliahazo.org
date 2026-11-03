@@ -166,13 +166,22 @@ alter table fiangonana enable row level security;
 
 -- Lecture publique des contenus publies uniquement (optionnel, utile si
 -- vous ajoutez plus tard un acces direct avec la cle anon).
+drop policy if exists "actualites publiees visibles" on actualites;
 create policy "actualites publiees visibles"
   on actualites for select using (statut = 'publie');
+drop policy if exists "demarches visibles" on demarches;
 create policy "demarches visibles" on demarches for select using (true);
+drop policy if exists "fokontany visibles" on fokontany;
 create policy "fokontany visibles" on fokontany for select using (true);
+drop policy if exists "aides visibles" on aides_sociales;
 create policy "aides visibles" on aides_sociales for select using (true);
+drop policy if exists "transports visibles" on transport_lignes;
 create policy "transports visibles" on transport_lignes for select using (true);
+drop policy if exists "emplois visibles" on emplois;
 create policy "emplois visibles" on emplois for select using (true);
+drop policy if exists "services visibles" on services_municipaux;
 create policy "services visibles" on services_municipaux for select using (true);
+drop policy if exists "evenements visibles" on evenements;
 create policy "evenements visibles" on evenements for select using (true);
+drop policy if exists "fiangonana visibles" on fiangonana;
 create policy "fiangonana visibles" on fiangonana for select using (true);
