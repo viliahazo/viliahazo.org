@@ -1,0 +1,540 @@
+export type Lang = "mg" | "fr";
+
+export const LANG_COOKIE = "lang";
+
+export function parseLang(value?: string | null): Lang {
+  return value === "fr" ? "fr" : "mg";
+}
+
+/** Pick a bilingual value, falling back to Malagasy (the primary language). */
+export function pick(lang: Lang, mg: string | null, fr: string | null): string {
+  if (lang === "fr" && fr) return fr;
+  return mg ?? fr ?? "";
+}
+
+const mg = {
+  common: {
+    siteName: "Viliahazo",
+    region: "Kaominina ambanivohitra · Madagasikara",
+    readMore: "Hamaky bebe kokoa",
+    seeAll: "Hijery daholo",
+    send: "Alefa",
+    submitting: "Alefa...",
+    back: "Hiverina",
+    required: "Ilaina",
+    optional: "tsy voatery",
+    date: "Daty",
+    place: "Toerana",
+    contact: "Fifandraisana",
+    hours: "Ora",
+    phone: "Telefaona",
+    email: "Mailaka",
+    name: "Anarana",
+    message: "Hafatra",
+    status: "Toe-javatra",
+    none: "Tsy misy votoaty amin'izao fotoana izao.",
+    error: "Nisy olana. Andramo indray azafady.",
+    loading: "Eo am-pakàna...",
+    published: "Navoaka",
+    pending: "Miandry fanamarinana",
+    rejected: "Nolavina",
+    processed: "Voadinika",
+    today: "Androany",
+    admin: "Fitantanana",
+    copy: "Adikao",
+  },
+  nav: {
+    home: "Fandraisana",
+    news: "Vaovao",
+    procedures: "Taratasy",
+    housing: "Trano & Sosialy",
+    transport: "Fitaterana",
+    jobs: "Asa",
+    events: "Hetsika",
+    admin: "Fitantanana",
+    login: "Hiditra",
+    register: "Hamorona kaonty",
+    logout: "Hivoaka",
+    account: "Kaontiko",
+    menu: "Sakafo",
+    language: "Fiteny",
+    switchToFr: "Français",
+    switchToMg: "Malagasy",
+  },
+  home: {
+    badge: "Tongasoa eto Viliahazo",
+    title: "Ny vaovao sy ny serivisy rehetra ao Viliahazo, amin'ny toerana iray.",
+    text: "Jereo ny vaovao farany eto an-tanàna, ny taratasy ilainao, ny fanampiana sosialy, ny fitaterana, ny asa ary ny hetsika kolontsaina — mora, haingana ary azo ampiasaina amin'ny finday.",
+    ctaNews: "Jereo ny vaovao",
+    ctaProcedures: "Hangataka taratasy",
+    quickAccess: "Fidirana haingana",
+    latestNews: "Vaovao farany",
+    sectionsTitle: "Ny fizarana rehetra",
+    sectionsSubtitle: "Fidio izay tianao fantarina.",
+    mayorTitle: "Ny Ben'ny tanàna",
+    mayorName: "RANDRIAMANANTENA Gabriel Rolland",
+    mayorRole: "Ben'ny tanàna · Viliahazo",
+    mayorText:
+      "Miarahaba anareo mponina rehetra ao Viliahazo. Ity sehatra ity dia natao hanamora ny fifandraisana misy antsika: ny fampahafantarana, ny fangatahana taratasy ary ny feo sy hevitra avy aminareo.",
+    fokontanyTitle: "Ny fokontany 8",
+    fokontanyText: "Mifandraisa amin'ny fokontany misy anao raha mila fanampiana eo an-toerana.",
+    statsCitizens: "Mponina tombanana",
+    statsFokontany: "Fokontany",
+    statsServices: "Serivisy",
+    statsFree: "Maimaim-poana",
+    contactTitle: "Mifandraisa amin'ny Kaominina",
+    contactText: "Alatsinainy ka hatramin'ny Zoma, 7:30 - 16:00",
+  },
+  sections: {
+    news: {
+      title: "Vaovao sy Filan-kevitra",
+      subtitle:
+        "Ny vaovao farany eto an-tanàna, fampitandrina, ary ny hevitra sy hafatra avy amin'ny mponina.",
+      cta: "Hijery ny vaovao",
+    },
+    procedures: {
+      title: "Taratasy sy Fitantanana",
+      subtitle:
+        "Torolalana hahazoana taratasy (kopia, dika mitovy, fanamarinam-ponenana), latsakemboka, ary ny momba ny Ben'ny tanàna sy ireo fokontany.",
+      cta: "Hijery ny taratasy",
+    },
+    housing: {
+      title: "Trano sy Tosika Sosialy",
+      subtitle:
+        "Fanampiana ho an'ny fianakaviana sahirana, fandaharan'asa sosialy, ary torolalana momba ny fananganana trano.",
+      cta: "Hijery ny fanampiana",
+    },
+    transport: {
+      title: "Fitaterana sy ny Fiantsonana",
+      subtitle:
+        "Ora sy lalan'ny taxibrousse mampitohy an'i Viliahazo amin'ny tanàna manodidina, ary ny toerana fiantsonana.",
+      cta: "Hijery ny fitaterana",
+    },
+    jobs: {
+      title: "Asa sy Sampandraharaha",
+      subtitle:
+        "Tolotra asa eo an-toerana, fiofanana, ary ny asan'ny kaominina (fandraofana fako, rano madio, jiro).",
+      cta: "Hijery ny asa",
+    },
+    events: {
+      title: "Hetsika sy Kolontsaina",
+      subtitle:
+        "Lisitry ny fety, tsena, fampisehoana, fanatanjahantena, ary ny antsipirian'ny fiangonana sy fivavahana.",
+      cta: "Hijery ny hetsika",
+    },
+  },
+  news: {
+    title: "Vaovao sy Filan-kevitra",
+    subtitle:
+      "Ny vaovao farany eto an-tanàna, fampitandrina, ary ny hevitra sy hafatra avy amin'ny mponina.",
+    alert: "Fampitandrina",
+    category: "Sokajy",
+    categories: {
+      vaovao: "Vaovao",
+      fampitandrina: "Fampitandrina",
+      hevitra: "Hevitra",
+      hetsika: "Hetsika",
+    },
+    contribute: "Hanampy vaovao",
+    contributeText:
+      "Mponina ve ianao? Alefaso ny vaovao na ny hevitrao. Hamarinin'ny mairie aloha izy ireo vao hivoaka.",
+    formTitle: "Hametraka vaovao na hevitra",
+    formName: "Ny anaranao",
+    formTitleField: "Lohateny",
+    formContent: "Ny votoatin'ny hafatra",
+    formCategory: "Sokajy",
+    formSuccess: "Voaray ny hafatrao. Hamarinin'ny mairie izy vao hamoahana azy.",
+    moderationNote: "Ho hita eo amin'ny pejy ity rehefa nohamarinina.",
+    empty: "Tsy mbola misy vaovao navoaka.",
+  },
+  procedures: {
+    title: "Taratasy sy Fitantanana",
+    subtitle:
+      "Ny torolalana rehetra hahazoana taratasy, ary ny toerana ahafahanao mangataka azy amin'ny internet.",
+    documents: "Antontan-taratasy ilaina",
+    delay: "Fe-potoana",
+    cost: "Sara",
+    request: "Hangataka",
+    formTitle: "Fangatahana taratasy",
+    formChoose: "Safidio ny taratasy",
+    formName: "Anarana feno",
+    formPhone: "Nomeraon-telefaona",
+    formEmail: "Mailaka",
+    formMessage: "Fanazavana fanampiny",
+    formSuccess:
+      "Voaray ny fangatahanao. Hifandray anao ny mpiasan'ny Kaominina ao anatin'ny 48 ora.",
+    empty: "Tsy mbola misy taratasy voarakitra.",
+    mayorTitle: "Ny Ben'ny tanàna",
+    fokontanyTitle: "Ny fokontany 8",
+    fokontanySubtitle: "Ny mpisolo toerana azo ifandraisana isaky ny fokontany.",
+    chief: "Lehiben'ny fokontany",
+  },
+  housing: {
+    title: "Trano sy Tosika Sosialy",
+    subtitle:
+      "Fanampiana ho an'ny fianakaviana sahirana, fandaharan'asa sosialy, ary torolalana momba ny fananganana trano.",
+    target: "Ho an'iza",
+    howTo: "Fomba fangatahana",
+    howToText:
+      "Mankanesa any amin'ny birao sosialin'ny Kaominina na ifandraiso amin'ny fokontany misy anao. Ento ny karatra misy ny laharam-pahaterahana sy ny taratasy fanamarinana avy amin'ny fokontany.",
+    empty: "Tsy mbola misy fanampiana voarakitra.",
+  },
+  transport: {
+    title: "Fitaterana sy ny Fiantsonana",
+    subtitle:
+      "Ora sy lalan'ny taxibrousse mampitohy an'i Viliahazo amin'ny tanàna manodidina, ary ny toerana fiantsonana.",
+    line: "Lalana",
+    departure: "Fiaingana",
+    arrival: "Fahatongavana",
+    duration: "Faharetana",
+    schedule: "Ora fiaingana",
+    price: "Tetikasa",
+    stationTitle: "Ny fiantsonana",
+    stationText:
+      "Ny fiantsonana afovoan'i Viliahazo no toerana fiaingan'ny taxibrousse rehetra. Tongava 30 minitra alohan'ny ora fiaingana.",
+    tipsTitle: "Fanamarihana",
+    tips: [
+      "Vita ny fandoavana mialoha ny fiakarana.",
+      "Ny entana mavesatra dia manana sara fanampiny.",
+      "Mety hiova ny ora raha misy orana na olana amin'ny lalana.",
+    ],
+    empty: "Tsy mbola misy lalana voarakitra.",
+  },
+  jobs: {
+    title: "Asa sy Sampandraharaha",
+    subtitle:
+      "Tolotra asa eo an-toerana, fiofanana, ary ny asan'ny kaominina (fandraofana fako, rano madio, jiro).",
+    jobsTitle: "Tolotra asa sy fiofanana",
+    employer: "Mpampiasa",
+    deadline: "Farany",
+    servicesTitle: "Asan'ny kaominina",
+    empty: "Tsy misy tolotra asa amin'izao fotoana izao.",
+  },
+  events: {
+    title: "Hetsika sy Kolontsaina",
+    subtitle:
+      "Lisitry ny fety, tsena, fampisehoana, fanatanjahantena, ary ny antsipirian'ny fiangonana sy fivavahana.",
+    upcoming: "Hetsika ho avy",
+    churchesTitle: "Fiangonana sy fivavahana",
+    churchesSubtitle: "Anarana, mpitondra, ary ora fivavahana.",
+    leader: "Mpitondra",
+    type: {
+      fety: "Fety",
+      tsena: "Tsena",
+      fampisehoana: "Fampisehoana",
+      fanatanjahantena: "Fanatanjahantena",
+    },
+    empty: "Tsy misy hetsika voarakitra.",
+  },
+  auth: {
+    loginTitle: "Hiditra amin'ny kaontinao",
+    loginText: "Midira raha te hanampy vaovao na hitantana ny sehatra.",
+    registerTitle: "Hamorona kaonty",
+    registerText: "Kaonty tsotra ho an'ny mponina. Maimaim-poana.",
+    email: "Mailaka",
+    password: "Tenimiafina",
+    name: "Anarana feno",
+    submitLogin: "Hiditra",
+    submitRegister: "Hamorona kaonty",
+    noAccount: "Tsy mbola manana kaonty?",
+    hasAccount: "Efa manana kaonty?",
+    invalid: "Diso ny mailaka na ny tenimiafina.",
+    exists: "Efa misy ny kaonty amin'ity mailaka ity.",
+    weak: "Tokony ho 8 litera farafahakeliny ny tenimiafina.",
+    missing: "Fenoy ny seha rehetra ilaina.",
+    welcome: "Tongasoa",
+  },
+  admin: {
+    title: "Fitantanana · Mairie",
+    subtitle: "Hamarinina eto ny vaovao sy ny fangatahana taratasy alohan'ny hamoahana azy.",
+    pendingNews: "Vaovao miandry fanamarinana",
+    demandes: "Fangatahana taratasy",
+    approve: "Hanaiky",
+    reject: "Handà",
+    markProcessed: "Voadinika",
+    noPending: "Tsy misy miandry fanamarinana.",
+    loginRequired: "Ilaina ny fidirana amin'ny kaontin'ny mairie.",
+    published: "Navoaka",
+    actingAs: "Mifandray amin'ny",
+    allNews: "Vaovao rehetra",
+    applicant: "Mpanao fangatahana",
+    procedure: "Taratasy",
+  },
+  footer: {
+    about:
+      "Sehatra ofisialy ho an'ny mponina ao Viliahazo : vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary kolontsaina.",
+    links: "Rohy",
+    contact: "Fifandraisana",
+    address: "Birao ny Kaominina, Viliahazo, Madagasikara",
+    rights: "Zon'ny rehetra voatokana.",
+    madeWith: "Natao ho an'ny mponina.",
+  },
+};
+
+export type Dictionary = typeof mg;
+
+const fr: Dictionary = {
+  common: {
+    siteName: "Viliahazo",
+    region: "Commune rurale · Madagascar",
+    readMore: "En savoir plus",
+    seeAll: "Voir tout",
+    send: "Envoyer",
+    submitting: "Envoi...",
+    back: "Retour",
+    required: "Obligatoire",
+    optional: "facultatif",
+    date: "Date",
+    place: "Lieu",
+    contact: "Contact",
+    hours: "Horaires",
+    phone: "Telephone",
+    email: "E-mail",
+    name: "Nom",
+    message: "Message",
+    status: "Statut",
+    none: "Aucun contenu pour le moment.",
+    error: "Une erreur est survenue. Veuillez réessayer.",
+    loading: "Chargement...",
+    published: "Publié",
+    pending: "En attente de validation",
+    rejected: "Rejeté",
+    processed: "Traité",
+    today: "Aujourd'hui",
+    admin: "Administration",
+    copy: "Copier",
+  },
+  nav: {
+    home: "Accueil",
+    news: "Actualités",
+    procedures: "Démarches",
+    housing: "Logement & social",
+    transport: "Transports",
+    jobs: "Emploi",
+    events: "Événements",
+    admin: "Administration",
+    login: "Connexion",
+    register: "Créer un compte",
+    logout: "Déconnexion",
+    account: "Mon compte",
+    menu: "Menu",
+    language: "Langue",
+    switchToFr: "Français",
+    switchToMg: "Malagasy",
+  },
+  home: {
+    badge: "Bienvenue a Viliahazo",
+    title: "Toute l'actualité et les services de Viliahazo, au même endroit.",
+    text: "Consultez les dernières nouvelles, vos démarches administratives, les aides sociales, les transports, l'emploi et les événements culturels — simple, rapide et adapté au mobile.",
+    ctaNews: "Voir les actualites",
+    ctaProcedures: "Faire une demarche",
+    quickAccess: "Accès rapide",
+    latestNews: "Dernières actualités",
+    sectionsTitle: "Toutes les rubriques",
+    sectionsSubtitle: "Choisissez ce que vous souhaitez consulter.",
+    mayorTitle: "Le Maire",
+    mayorName: "RANDRIAMANANTENA Gabriel Rolland",
+    mayorRole: "Maire · Viliahazo",
+    mayorText:
+      "Je salue tous les habitants de Viliahazo. Cette plateforme facilite notre communication : information, demandes de documents et vos avis.",
+    fokontanyTitle: "Les 8 fokontany",
+    fokontanyText: "Contactez votre fokontany pour une assistance locale.",
+    statsCitizens: "Habitants (estimation)",
+    statsFokontany: "Fokontany",
+    statsServices: "Services",
+    statsFree: "Gratuit",
+    contactTitle: "Contacter la commune",
+    contactText: "Du lundi au vendredi, 7h30 - 16h00",
+  },
+  sections: {
+    news: {
+      title: "Actualités et informations",
+      subtitle:
+        "Les dernières nouvelles du bourg, les alertes, ainsi que les avis et messages des habitants.",
+      cta: "Voir les actualites",
+    },
+    procedures: {
+      title: "Demarches administratives",
+      subtitle:
+        "Comment obtenir vos documents (copie, certification, certificat de résidence), la légalisation, et les informations sur le Maire et les fokontany.",
+      cta: "Voir les demarches",
+    },
+    housing: {
+      title: "Logement et aides sociales",
+      subtitle:
+        "Aides aux familles vulnérables, programmes sociaux et conseils pour la construction de logements.",
+      cta: "Voir les aides",
+    },
+    transport: {
+      title: "Transports et stationnement",
+      subtitle:
+        "Horaires et itinéraires des taxis-brousse reliant Viliahazo aux villes voisines, et points d'arrêt.",
+      cta: "Voir les transports",
+    },
+    jobs: {
+      title: "Emploi et services municipaux",
+      subtitle:
+        "Offres d'emploi locales, formations, et services de la commune (collecte des déchets, eau, éclairage).",
+      cta: "Voir les emplois",
+    },
+    events: {
+      title: "Evenements et culture",
+      subtitle:
+        "Fêtes, marchés, spectacles, sport, ainsi que les informations sur les églises et lieux de culte.",
+      cta: "Voir les evenements",
+    },
+  },
+  news: {
+    title: "Actualités et informations",
+    subtitle:
+      "Les dernières nouvelles du bourg, les alertes, ainsi que les avis et messages des habitants.",
+    alert: "Alerte",
+    category: "Categorie",
+    categories: {
+      vaovao: "Actualite",
+      fampitandrina: "Alerte",
+      hevitra: "Avis",
+      hetsika: "Evenement",
+    },
+    contribute: "Proposer une information",
+    contributeText:
+      "Vous etes habitant ? Envoyez une actualite ou votre avis. Il sera valide par la mairie avant publication.",
+    formTitle: "Publier une information ou un avis",
+    formName: "Votre nom",
+    formTitleField: "Titre",
+    formContent: "Contenu du message",
+    formCategory: "Categorie",
+    formSuccess: "Message reçu. La mairie le validera avant publication.",
+    moderationNote: "Visible sur cette page après validation.",
+    empty: "Aucune actualité publiée pour le moment.",
+  },
+  procedures: {
+    title: "Demarches administratives",
+    subtitle:
+      "Toutes les démarches pour obtenir vos documents, et la possibilité de les demander en ligne.",
+    documents: "Pièces à fournir",
+    delay: "Délai",
+    cost: "Frais",
+    request: "Demander",
+    formTitle: "Demande de document",
+    formChoose: "Choisir le document",
+    formName: "Nom complet",
+    formPhone: "Numero de telephone",
+    formEmail: "E-mail",
+    formMessage: "Précisions",
+    formSuccess:
+      "Votre demande a été enregistrée. Un agent de la commune vous contactera sous 48 heures.",
+    empty: "Aucune démarche enregistrée.",
+    mayorTitle: "Le Maire",
+    fokontanyTitle: "Les 8 fokontany",
+    fokontanySubtitle: "Les responsables à contacter dans chaque fokontany.",
+    chief: "Chef de fokontany",
+  },
+  housing: {
+    title: "Logement et aides sociales",
+    subtitle:
+      "Aides aux familles vulnérables, programmes sociaux et conseils pour la construction de logements.",
+    target: "Public concerne",
+    howTo: "Comment faire la demande",
+    howToText:
+      "Rendez-vous au bureau social de la commune ou contactez votre fokontany. Présentez une pièce d'identité et une attestation du fokontany.",
+    empty: "Aucune aide enregistrée.",
+  },
+  transport: {
+    title: "Transports et stationnement",
+    subtitle:
+      "Horaires et itinéraires des taxis-brousse reliant Viliahazo aux villes voisines, et points d'arrêt.",
+    line: "Ligne",
+    departure: "Depart",
+    arrival: "Arrivee",
+    duration: "Duree",
+    schedule: "Horaires de depart",
+    price: "Tarif",
+    stationTitle: "La gare routiere",
+    stationText:
+      "La gare centrale de Viliahazo est le point de départ de tous les taxis-brousse. Présentez-vous 30 minutes avant le départ.",
+    tipsTitle: "Bon a savoir",
+    tips: [
+      "Le paiement se fait avant la montée.",
+      "Les gros bagages sont facturés en supplément.",
+      "Les horaires peuvent changer en cas de pluie ou de route coupée.",
+    ],
+    empty: "Aucune ligne enregistrée.",
+  },
+  jobs: {
+    title: "Emploi et services municipaux",
+    subtitle:
+      "Offres d'emploi locales, formations, et services de la commune (collecte des déchets, eau, éclairage).",
+    jobsTitle: "Offres d'emploi et formations",
+    employer: "Employeur",
+    deadline: "Date limite",
+    servicesTitle: "Services municipaux",
+    empty: "Aucune offre pour le moment.",
+  },
+  events: {
+    title: "Evenements et culture",
+    subtitle:
+      "Fêtes, marchés, spectacles, sport, ainsi que les informations sur les églises et lieux de culte.",
+    upcoming: "Prochains evenements",
+    churchesTitle: "Églises et lieux de culte",
+    churchesSubtitle: "Nom, responsable et horaires de culte.",
+    leader: "Responsable",
+    type: {
+      fety: "Fête",
+      tsena: "Marché",
+      fampisehoana: "Spectacle",
+      fanatanjahantena: "Sport",
+    },
+    empty: "Aucun événement enregistré.",
+  },
+  auth: {
+    loginTitle: "Connexion à votre compte",
+    loginText: "Connectez-vous pour proposer des informations ou gérer la plateforme.",
+    registerTitle: "Créer un compte",
+    registerText: "Compte simple pour les habitants. Gratuit.",
+    email: "E-mail",
+    password: "Mot de passe",
+    name: "Nom complet",
+    submitLogin: "Se connecter",
+    submitRegister: "Créer le compte",
+    noAccount: "Pas encore de compte ?",
+    hasAccount: "Déjà un compte ?",
+    invalid: "E-mail ou mot de passe incorrect.",
+    exists: "Un compte existe déjà avec cet e-mail.",
+    weak: "Le mot de passe doit contenir au moins 8 caractères.",
+    missing: "Veuillez remplir tous les champs obligatoires.",
+    welcome: "Bienvenue",
+  },
+  admin: {
+    title: "Administration · Mairie",
+    subtitle:
+      "Validez ici les informations et les demandes de documents avant publication.",
+    pendingNews: "Informations en attente",
+    demandes: "Demandes de documents",
+    approve: "Approuver",
+    reject: "Rejeter",
+    markProcessed: "Traiter",
+    noPending: "Rien en attente de validation.",
+    loginRequired: "Connexion au compte de la mairie requise.",
+    published: "Publié",
+    actingAs: "Connecté en tant que",
+    allNews: "Toutes les actualités",
+    applicant: "Demandeur",
+    procedure: "Démarche",
+  },
+  footer: {
+    about:
+      "Plateforme officielle des habitants de Viliahazo : actualités, démarches, aides sociales, transports, emploi et culture.",
+    links: "Liens",
+    contact: "Contact",
+    address: "Bureau communal, Viliahazo, Madagascar",
+    rights: "Tous droits réservés.",
+    madeWith: "Fait pour les habitants.",
+  },
+};
+
+const dictionaries: Record<Lang, Dictionary> = { mg, fr };
+
+export function getDictionary(lang: Lang): Dictionary {
+  return dictionaries[lang];
+}
