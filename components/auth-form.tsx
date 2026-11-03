@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { LogIn, UserPlus } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -48,6 +48,41 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const oauthError = searchParams.get("error");
   const isLogin = mode === "login";
 
+  const [oauthLoading, setOauthLoading] = useState(false);
+
+  // Intercepte le fragment d'URL #access_token=... renvoyé par le flux OAuth implicite de Supabase
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (!hash || !hash.includes("access_token=")) return;
+
+    const params = new URLSearchParams(hash.replace(/^#/, ""));
+    const accessToken = params.get("access_token");
+    if (!accessToken) return;
+
+    setOauthLoading(true);
+
+    fetch("/api/auth/oauth-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ accessToken }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.redirect) {
+          // Nettoie le fragment de l'URL pour ne pas exposer le token
+          window.history.replaceState(null, "", window.location.pathname);
+          window.location.assign(data.redirect);
+        } else {
+          setOauthLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("[oauth] Token exchange failed:", err);
+        setOauthLoading(false);
+      });
+  }, []);
+
   const [state, formAction, pending] = useActionState<AuthState, FormData>(
     isLogin ? login : register,
     null,
@@ -65,6 +100,17 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             : state?.error || oauthError
               ? t.common.error
               : null;
+
+  if (oauthLoading) {
+    return (
+      <div className="rounded-2xl border border-earth-200 bg-white p-8 text-center shadow-sm">
+        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-leaf-600 border-t-transparent" />
+        <p className="text-sm font-semibold text-earth-800">
+          {t.common.submitting}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl border border-earth-200 bg-white p-6 shadow-sm">

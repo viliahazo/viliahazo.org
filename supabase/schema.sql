@@ -204,3 +204,35 @@ drop policy if exists "evenements visibles" on evenements;
 create policy "evenements visibles" on evenements for select using (true);
 drop policy if exists "fiangonana visibles" on fiangonana;
 create policy "fiangonana visibles" on fiangonana for select using (true);
+
+-- ============================================================
+--  Synchronisation automatique auth.users -> public.users
+--  (pour les inscriptions OAuth Google / Supabase)
+-- ============================================================
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.users (id, nom, email, password_hash, role)
+  values (
+    new.id,
+    coalesce(
+      new.raw_user_meta_data->>'full_name',
+      new.raw_user_meta_data->>'name',
+      split_part(new.email, '@', 1)
+    ),
+    lower(new.email),
+    'oauth:google',
+    'citoyen'
+  )
+  on conflict (email) do update
+  set nom = coalesce(excluded.nom, public.users.nom);
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- Trigger optionnel a executer dans Supabase SQL Editor :
+-- drop trigger if exists on_auth_user_created on auth.users;
+-- create trigger on_auth_user_created
+--   after insert on auth.users
+--   for each row execute procedure public.handle_new_user();
+

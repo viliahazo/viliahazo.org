@@ -15,8 +15,49 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/hiditra?error=oauth_failed", request.url));
   }
 
+  // Si aucun `code` en query param, le token peut être dans le fragment d'URL #access_token=...
+  // qui n'est accessible que côté navigateur. On sert un script client qui le transmet à /api/auth/oauth-token.
   if (!code) {
-    return NextResponse.redirect(new URL("/hiditra", request.url));
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fanamarinana / Authentification</title>
+</head>
+<body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#fbfbf9;color:#2c221e;">
+  <div style="text-align:center;">
+    <p style="font-size:14px;font-weight:600;">Eo am-pidirana amin'ny alalan'ny Google...</p>
+    <p style="font-size:12px;color:#78655c;">Connexion avec Google en cours...</p>
+  </div>
+  <script>
+    const hash = window.location.hash;
+    if (hash && hash.includes("access_token=")) {
+      const params = new URLSearchParams(hash.replace(/^#/, ''));
+      const accessToken = params.get("access_token");
+      fetch("/api/auth/oauth-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accessToken })
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok && d.redirect) {
+          window.location.assign(d.redirect);
+        } else {
+          window.location.assign("/hiditra?error=oauth_failed");
+        }
+      })
+      .catch(() => window.location.assign("/hiditra?error=oauth_failed"));
+    } else {
+      window.location.assign("/hiditra");
+    }
+  </script>
+</body>
+</html>`;
+
+    return new Response(html, {
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    });
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -27,7 +68,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Échange le code d'autorisation contre une session Supabase
+  // Échange le code d'autorisation contre une session Supabase (flux PKCE)
   const supabase = createClient(url, anonKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
@@ -74,7 +115,7 @@ export async function GET(request: NextRequest) {
 
   let finalUser = existingUser;
 
-  // 2. S'il n'existe pas encore, l'inscrire dans la table users
+  // 2. S'il n'existe pas encore, l'inscrire dans la table public.users
   if (!finalUser) {
     const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
     const role = adminEmail && email === adminEmail ? "admin" : "citoyen";
@@ -82,6 +123,7 @@ export async function GET(request: NextRequest) {
     const { data: newUser, error: insertError } = await db
       .from("users")
       .insert({
+        id: oauthUser.id,
         nom: name,
         email: email,
         password_hash: "oauth:google",
