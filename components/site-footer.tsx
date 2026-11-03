@@ -73,8 +73,8 @@ export function SiteFooter({ t }: { t: Dictionary }) {
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 shrink-0" aria-hidden />
-              <a href="mailto:kaominina@viliahazo.mg" className="hover:underline">
-                kaominina@viliahazo.mg
+              <a href="mailto:contact@viliahazo.org" className="hover:underline">
+                contact@viliahazo.org
               </a>
             </li>
           </ul>

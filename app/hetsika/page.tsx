@@ -4,13 +4,20 @@ import { getLangAndDict } from "@/lib/lang";
 import { getEvenements, getFiangonana } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDateTime } from "@/lib/format";
+import { pageMetadata } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
+import { JsonLd } from "@/components/json-ld";
+import { itemListJsonLd } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "Hetsika sy Kolontsaina",
-  description:
-    "Lisitry ny fety, tsena, fampisehoana, fanatanjahantena, ary ny antsipirian'ny fiangonana sy fivavahana ao Viliahazo.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.events.title,
+    description: t.events.subtitle,
+    path: "/hetsika",
+    keywords: ["hetsika Viliahazo", "événements", "fety", "tsena", "fiangonana"],
+  });
+}
 
 export default async function EventsPage() {
   const { lang, t } = await getLangAndDict();
@@ -21,9 +28,20 @@ export default async function EventsPage() {
 
   return (
     <>
+      <JsonLd
+        data={itemListJsonLd({
+          path: "/hetsika",
+          name: t.events.upcoming,
+          items: evenements.map((item) => ({
+            name: pick(lang, item.titre_mg, item.titre_fr),
+            description: pick(lang, item.description_mg, item.description_fr) || undefined,
+          })),
+        })}
+      />
       <PageHero
         title={t.events.title}
         subtitle={t.events.subtitle}
+        path="/hetsika"
         icon={<PartyPopper className="h-6 w-6" aria-hidden />}
       />
 

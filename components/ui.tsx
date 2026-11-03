@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+import { breadcrumbJsonLd } from "@/lib/structured-data";
+import { SITE_NAME } from "@/lib/site";
+import { JsonLd } from "./json-ld";
 
 export function Card({
   children,
@@ -42,13 +45,49 @@ export function PageHero({
   title,
   subtitle,
   icon,
+  path,
 }: {
   title: string;
   subtitle: string;
   icon?: ReactNode;
+  /** Chemin de la page : ajoute le fil d'Ariane et son balisage JSON-LD. */
+  path?: string;
 }) {
+  const crumbs = path
+    ? [
+        { name: SITE_NAME, path: "/" },
+        { name: title, path },
+      ]
+    : null;
+
   return (
     <section className="border-b border-earth-200 bg-gradient-to-b from-leaf-50 to-earth-50">
+      {crumbs ? (
+        <>
+          <JsonLd data={breadcrumbJsonLd(crumbs)} />
+          <nav
+            aria-label="Fil d'Ariane"
+            className="mx-auto max-w-6xl px-4 pt-5 text-xs text-earth-600"
+          >
+            <ol className="flex flex-wrap items-center gap-1.5">
+              {crumbs.map((crumb, index) => (
+                <li key={crumb.path} className="flex items-center gap-1.5">
+                  {index > 0 ? <span aria-hidden>/</span> : null}
+                  {index === crumbs.length - 1 ? (
+                    <span aria-current="page" className="font-semibold text-earth-800">
+                      {crumb.name}
+                    </span>
+                  ) : (
+                    <a href={crumb.path} className="hover:text-leaf-800 hover:underline">
+                      {crumb.name}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </>
+      ) : null}
       <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
         <div className="flex items-start gap-4">
           {icon ? (

@@ -12,7 +12,13 @@ export function LanguageSwitch({ lang }: { lang: Lang }) {
   function switchTo(next: Lang) {
     if (next === lang) return;
     document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
-    startTransition(() => router.refresh());
+    // Même URL + ?lang=fr|mg : la version française reste indexable et
+    // partageable (le proxy mémorise aussi le choix en cookie).
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", next);
+    startTransition(() =>
+      router.push(`${url.pathname}${url.search}${url.hash}`, { scroll: false }),
+    );
   }
 
   return (

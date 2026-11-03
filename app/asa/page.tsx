@@ -4,13 +4,18 @@ import { getLangAndDict } from "@/lib/lang";
 import { getEmplois, getServices } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
+import { pageMetadata } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: "Asa sy Sampandraharaha",
-  description:
-    "Tolotra asa eo an-toerana, fiofanana, ary ny asan'ny kaominina Viliahazo (fandraofana fako, rano madio, jiro).",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.jobs.title,
+    description: t.jobs.subtitle,
+    path: "/asa",
+    keywords: ["asa Viliahazo", "emploi Madagascar", "offres d'emploi", "fiofanana"],
+  });
+}
 
 export default async function JobsPage() {
   const { lang, t } = await getLangAndDict();
@@ -21,6 +26,7 @@ export default async function JobsPage() {
       <PageHero
         title={t.jobs.title}
         subtitle={t.jobs.subtitle}
+        path="/asa"
         icon={<BriefcaseBusiness className="h-6 w-6" aria-hidden />}
       />
 

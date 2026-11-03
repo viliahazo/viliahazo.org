@@ -3,13 +3,18 @@ import { House, Info, Phone, Users } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getAides } from "@/lib/data";
 import { pick } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/seo";
 import { Card, EmptyState, PageHero } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: "Trano sy Tosika Sosialy",
-  description:
-    "Fanampiana ho an'ny fianakaviana sahirana, fandaharan'asa sosialy, ary torolalana momba ny fananganana trano ao Viliahazo.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.housing.title,
+    description: t.housing.subtitle,
+    path: "/trano",
+    keywords: ["fanampiana sosialy", "trano Viliahazo", "aides sociales Madagasikara"],
+  });
+}
 
 export default async function HousingPage() {
   const { lang, t } = await getLangAndDict();
@@ -20,6 +25,7 @@ export default async function HousingPage() {
       <PageHero
         title={t.housing.title}
         subtitle={t.housing.subtitle}
+        path="/trano"
         icon={<House className="h-6 w-6" aria-hidden />}
       />
 

@@ -1,4 +1,4 @@
-import { selectRows } from "./db";
+import { getDb, selectRows } from "./db";
 import type {
   Actualite,
   AideSociale,
@@ -60,4 +60,55 @@ export function getFiangonana() {
 
 export function getDemandes() {
   return selectRows<Demande>("demandes", { order: FRESH, limit: 100 });
+}
+
+/* ------------------------- Administration ------------------------- */
+
+/** Toutes les lignes d'une table, pour la gestion administrative. */
+export async function getTableRows<T = Record<string, unknown>>(
+  table: string,
+  order: { column: string; ascending: boolean },
+  limit = 500,
+): Promise<T[]> {
+  const db = getDb();
+  if (!db) return [];
+
+  const { data, error } = await db
+    .from(table)
+    .select("*")
+    .order(order.column, { ascending: order.ascending })
+    .limit(limit);
+
+  if (error) {
+    console.error(`[db] ${table}: ${error.message}`);
+    return [];
+  }
+  return (data ?? []) as T[];
+}
+
+export async function getTableRow<T = Record<string, unknown>>(
+  table: string,
+  id: string,
+): Promise<T | null> {
+  const db = getDb();
+  if (!db) return null;
+
+  const { data, error } = await db.from(table).select("*").eq("id", id).maybeSingle();
+  if (error) {
+    console.error(`[db] ${table}/${id}: ${error.message}`);
+    return null;
+  }
+  return (data as T) ?? null;
+}
+
+export async function countTableRows(table: string): Promise<number> {
+  const db = getDb();
+  if (!db) return 0;
+
+  const { count, error } = await db
+    .from(table)
+    .select("id", { count: "exact", head: true });
+
+  if (error) return 0;
+  return count ?? 0;
 }

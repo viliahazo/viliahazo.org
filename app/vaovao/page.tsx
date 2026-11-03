@@ -5,14 +5,19 @@ import { getPublishedNews } from "@/lib/data";
 import { getSessionUser } from "@/lib/auth";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
+import { pageMetadata } from "@/lib/seo";
 import { Badge, EmptyState, PageHero } from "@/components/ui";
 import { NewsForm } from "@/components/news-form";
 
-export const metadata: Metadata = {
-  title: "Vaovao sy Filan-kevitra",
-  description:
-    "Ny vaovao farany eto Viliahazo, ny fampitandrina, ary ny hevitra sy hafatra avy amin'ny mponina.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.news.title,
+    description: t.news.subtitle,
+    path: "/vaovao",
+    keywords: ["vaovao Viliahazo", "actualités Viliahazo", "fampitandrina"],
+  });
+}
 
 export default async function NewsPage() {
   const { lang, t } = await getLangAndDict();
@@ -23,6 +28,7 @@ export default async function NewsPage() {
       <PageHero
         title={t.news.title}
         subtitle={t.news.subtitle}
+        path="/vaovao"
         icon={<Newspaper className="h-6 w-6" aria-hidden />}
       />
 

@@ -60,9 +60,55 @@ ADMIN_PASSWORD=<mot de passe fort>
 - **Citoyen** : `/hisoratra` (créer un compte), `/hiditra` (connexion) puis
   proposition d'actualités depuis `/vaovao`. Les propositions sont créées avec
   le statut `en_attente`.
-- **Mairie** : se connecter avec `ADMIN_EMAIL` / `ADMIN_PASSWORD` ; l'accès
-  `/admin` permet d'approuver ou refuser les actualités et de traiter les
-  demandes de documents.
+- **Mairie** : se connecter avec `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
+
+### Administration (`/admin`)
+
+L'administration couvre **toutes** les informations du site : chaque table est
+créée, modifiée et supprimée depuis le navigateur, sans passer par Supabase.
+
+| Section | Table | Contenu géré |
+| --- | --- | --- |
+| Vaovao | `actualites` | actualités, alertes, avis (publication / rejet) |
+| Taratasy | `demarches` | démarches, pièces à fournir (une par ligne), délai, frais, ordre |
+| Fangatahana | `demandes` | demandes citoyennes, statut traité / rejeté |
+| Fokontany | `fokontany` | nom, chef, téléphone |
+| Trano | `aides_sociales` | aides sociales, public ciblé, contact |
+| Fitaterana | `transport_lignes` | lignes, horaires, durée, tarif |
+| Asa | `emplois`, `services_municipaux` | offres d'emploi, services communaux |
+| Hetsika | `evenements`, `fiangonana` | événements, églises et horaires de culte |
+| Kaonty | `users` | comptes citoyens, rôles, réinitialisation de mot de passe |
+
+Chaque formulaire est bilingue (MG obligatoire, FR optionnel), valide les
+champs obligatoires, vérifie l'unicité (`slug`, e-mail) et rafraîchit aussitôt
+les pages publiques concernées. Les colonnes autorisées sont déclarées une
+seule fois dans [`lib/admin-schema.ts`](./lib/admin-schema.ts) : cette liste sert
+de liste blanche côté serveur, aucune table hors administration ne peut être
+écrite. Les mots de passe ne sont jamais relus, seulement hachés à l'écriture.
+
+> `ADMIN_PASSWORD` doit être changé avant toute mise en ligne : il donne accès à
+> l'administration complète.
+
+## Référencement (SEO)
+
+Tout est généré côté serveur, sans service externe :
+
+- **URL canonique par langue** : `?lang=fr` sert réellement la page en français
+  (via `proxy.ts`), avec `<html lang>` et `og:locale` corrects ; le malgache
+  reste l'URL nue. Canonical + `hreflang` (`mg`, `fr`, `x-default`) sur chaque page.
+- **`sitemap.xml`** (`app/sitemap.ts`) : 7 pages × 2 langues, avec alternates.
+- **`robots.txt`** (`app/robots.ts`) : `/admin`, `/hiditra`, `/hisoratra` exclus.
+- **Open Graph / Twitter Card** : image 1200×630 générée par `app/opengraph-image.tsx`.
+- **Données structurées JSON-LD** : `GovernmentOrganization` (mairie, maire,
+  adresse, horaires), `WebSite`, `BreadcrumbList` sur chaque rubrique et
+  `ItemList` pour les événements.
+- **Manifeste PWA** (`app/manifest.ts`) : nom, icône, couleurs, raccourcis.
+- **Métadonnées par page** via `lib/seo.ts` (`pageMetadata`) : titre, description,
+  mots-clés, canonical, hreflang, Open Graph.
+
+**À faire en production** : renseigner `NEXT_PUBLIC_SITE_URL` (ex.
+`https://viliahazo.mg`). Sans cette variable, les URL canoniques pointent vers
+`https://viliahazo.org`.
 
 ## Déploiement sur Vercel (gratuit)
 
@@ -87,11 +133,16 @@ app/
   asa/                     emploi et services municipaux
   hetsika/                 événements et lieux de culte
   hiditra/ hisoratra/      connexion / inscription
-  admin/                   validation mairie (protégée)
-  actions/                 Server Actions (news, demande, auth, admin)
-components/                header, footer, formulaires, UI
-lib/                       i18n (mg/fr), accès données, auth, formats
+  admin/                   tableau de bord mairie (protégé)
+    [table]/               liste d'une table + création / édition
+  sitemap.ts robots.ts
+  manifest.ts opengraph-image.tsx
+  actions/                 Server Actions (news, demande, auth, admin, content)
+components/                header, footer, formulaires, admin, UI
+lib/                       i18n (mg/fr), données, auth, formats, seo, admin-schema
+proxy.ts                   langue via ?lang=fr|mg
 supabase/                  schema.sql + seed.sql
+scripts/                   tests Supabase et CRUD administration
 ```
 
 ## Accessibilité et performance
@@ -107,4 +158,6 @@ supabase/                  schema.sql + seed.sql
 ```bash
 npx tsc --noEmit
 npm run build
+node scripts/test-supabase.mjs     # connexion, tables, RLS, écritures
+node scripts/test-admin-crud.mjs   # create → update → delete sur chaque table
 ```

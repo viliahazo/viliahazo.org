@@ -13,8 +13,19 @@ import { getFokontany, getProcedures, getPublishedNews } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { sections } from "@/lib/sections";
 import { formatDate } from "@/lib/format";
+import { pageMetadata } from "@/lib/seo";
 import { Badge, Card } from "@/components/ui";
 import { SetupNotice } from "@/components/setup-notice";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.home.title,
+    description: t.home.text,
+    path: "/",
+  });
+}
 
 export default async function HomePage() {
   const { lang, t } = await getLangAndDict();
@@ -284,8 +295,8 @@ export default async function HomePage() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4" aria-hidden />
-                <a href="mailto:kaominina@viliahazo.mg" className="hover:underline">
-                  kaominina@viliahazo.mg
+                <a href="mailto:contact@viliahazo.org" className="hover:underline">
+                contact@viliahazo.org
                 </a>
               </li>
               <li className="flex items-center gap-2">

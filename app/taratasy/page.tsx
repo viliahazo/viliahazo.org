@@ -3,14 +3,25 @@ import { Clock, FileText, MapPin, Phone, Wallet } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getFokontany, getProcedures } from "@/lib/data";
 import { pick } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/seo";
 import { Card, EmptyState, PageHero } from "@/components/ui";
 import { DemarcheForm } from "@/components/demarche-form";
 
-export const metadata: Metadata = {
-  title: "Taratasy sy Fitantanana",
-  description:
-    "Torolalana hahazoana taratasy (kopia, dika mitovy, fanamarinam-ponenana), latsakemboka, ary ny momba ny Ben'ny tanàna sy ireo fokontany.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getLangAndDict();
+  return pageMetadata({
+    title: t.procedures.title,
+    description: t.procedures.subtitle,
+    path: "/taratasy",
+    keywords: [
+      "fanamarinam-ponenana",
+      "kopia taratasy",
+      "certificat de résidence",
+      "démarches Viliahazo",
+      "latsakemboka",
+    ],
+  });
+}
 
 export default async function ProceduresPage() {
   const { lang, t } = await getLangAndDict();
@@ -24,6 +35,7 @@ export default async function ProceduresPage() {
       <PageHero
         title={t.procedures.title}
         subtitle={t.procedures.subtitle}
+        path="/taratasy"
         icon={<FileText className="h-6 w-6" aria-hidden />}
       />
 

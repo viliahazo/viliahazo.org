@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Viliahazo">
+  <title>Viliahazo</title>
+  <rect width="64" height="64" rx="14" fill="#25582b"/>
+  <circle cx="44" cy="19" r="6" fill="#e7d5bb"/>
+  <path d="M0 44c9-7 17-6 25-1s17 4 24-2c5-4 10-4 15-2v25H0z" fill="#3f8b45"/>
+  <path d="M0 52c9-6 17-5 26-1s18 3 25-2c4-3 9-3 13-1v16H0z" fill="#94c797"/>
+  <path d="M12 35.5 24.5 20 37 35.5z" fill="#fbf7f0"/>
+  <path d="M16.5 35.5h16V49h-16z" fill="#fbf7f0"/>
+  <path d="M21.5 41.5h6V49h-6z" fill="#25582b"/>
+</svg>
