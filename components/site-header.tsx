@@ -106,7 +106,7 @@ export function SiteHeader({
             <span className="block text-base font-extrabold tracking-tight text-leaf-900">
               {t.common.siteName}
             </span>
-            <span className="block text-[11px] text-earth-600">{t.common.region}</span>
+            <span className="hidden sm:block text-[11px] text-earth-600">{t.common.region}</span>
           </span>
         </Link>
 
