@@ -19,6 +19,7 @@ export const SITE_ORG = {
   country: "MG",
   phone: "+261340000000",
   email: "contact@viliahazo.org",
+  // TODO: DEV MUST REPLACE WITH REAL PHONE NUMBER
   openingHours: "Mo-Fr 07:30-16:00",
 } as const;
 
@@ -27,8 +28,10 @@ export const PUBLIC_PATHS = [
   "/",
   "/vaovao",
   "/taratasy",
+  "/fokontany",
   "/trano",
   "/fitaterana",
   "/asa",
   "/hetsika",
+  "/contact",
 ] as const;

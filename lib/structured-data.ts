@@ -7,8 +7,28 @@ type JsonLdObject = Record<string, unknown>;
 const ADDRESS = {
   "@type": "PostalAddress",
   addressLocality: SITE_ORG.locality,
+  addressRegion: SITE_ORG.country,
   addressCountry: SITE_ORG.country,
 };
+
+/** Schema.org LocalGovernment type for the homepage */
+export function localGovernmentJsonLd(): JsonLdObject {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalGovernment",
+    name: "Kaominina Viliahazo",
+    alternateName: "Mairie de Viliahazo",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Viliahazo",
+      addressRegion: "Analamanga",
+      addressCountry: "MG"
+    },
+    url: SITE_URL,
+    telephone: SITE_ORG.phone,
+    openingHours: SITE_ORG.openingHours
+  };
+}
 
 export function organizationJsonLd(): JsonLdObject {
   return {

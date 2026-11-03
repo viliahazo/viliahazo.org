@@ -7,7 +7,7 @@ import { LangProvider } from "@/components/lang-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { JsonLd } from "@/components/json-ld";
-import { organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
+import { localGovernmentJsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { OG_IMAGE, languageAlternates } from "@/lib/seo";
 import { SITE_NAME, SITE_ORG, SITE_URL } from "@/lib/site";
 
@@ -101,6 +101,7 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body className="flex min-h-screen flex-col">
+        <JsonLd data={localGovernmentJsonLd()} />
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd(lang)} />
         <LangProvider lang={lang} t={t}>
