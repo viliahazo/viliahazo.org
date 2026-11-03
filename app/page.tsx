@@ -513,45 +513,12 @@ export default async function HomePage() {
         </ul>
       </section>
 
-      {/* ═══════════════ MAYOR WORD + FOKONTANY ════════════════════════════ */}
-      <section className="mx-auto grid max-w-6xl gap-5 px-4 pb-12 lg:grid-cols-2">
-        {/* Mayor */}
-        <Card className="flex flex-col justify-between border-leaf-200/70 bg-gradient-to-br from-white to-leaf-50/40 p-6 shadow-sm">
-          <div>
-            <div className="flex items-center gap-4">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-leaf-700 to-leaf-500 text-lg font-extrabold text-white shadow ring-4 ring-leaf-100">
-                RG
-              </span>
-              <div>
-                <span className="inline-flex items-center gap-1 rounded bg-leaf-100 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-leaf-800">
-                  <Sprout className="h-3 w-3" aria-hidden />
-                  {t.home.mayorGreeting}
-                </span>
-                <p className="mt-1 text-base font-bold text-earth-900">{t.home.mayorName}</p>
-                <p className="text-xs text-earth-500">{t.home.mayorRole}</p>
-              </div>
-            </div>
-            <blockquote className="mt-5 border-l-2 border-leaf-400 pl-4 text-sm italic leading-relaxed text-earth-700">
-              &ldquo;{t.home.mayorText}&rdquo;
-            </blockquote>
-          </div>
-          <div className="mt-5 flex items-center justify-between border-t border-earth-100 pt-4">
-            <Link
-              href="/taratasy"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-leaf-700 hover:underline"
-            >
-              {t.sections.procedures.cta}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-            <span className="text-xs text-earth-400">Kaominina Viliahazo</span>
-          </div>
-        </Card>
-
-        {/* Fokontany */}
+      {/* ═══════════════ FOKONTANY ════════════════════════════ */}
+      <section className="mx-auto max-w-6xl px-4 pb-12">
         <Card className="p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between border-b border-earth-100 pb-3">
             <div>
-              <h2 className="text-base font-bold text-earth-900">{t.home.fokontanyTitle}</h2>
+              <h2 className="text-base font-bold text-earth-900 sm:text-lg">{t.home.fokontanyTitle}</h2>
               <p className="mt-0.5 text-xs text-earth-500">{t.home.fokontanyText}</p>
             </div>
             <Link
@@ -562,7 +529,7 @@ export default async function HomePage() {
               <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>
           </div>
-          <ul className="grid grid-cols-2 gap-2.5">
+          <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             {fokontany.map((item) => (
               <li key={item.id}>
                 <Link

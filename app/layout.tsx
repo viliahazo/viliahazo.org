@@ -36,8 +36,6 @@ export const metadata: Metadata = {
     "fitaterana",
     "asa",
     "hetsika",
-    "Ben'ny tanàna",
-    SITE_ORG.mayor,
   ],
   authors: [{ name: SITE_ORG.name, url: SITE_URL }],
   creator: SITE_ORG.name,

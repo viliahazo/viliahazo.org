@@ -124,27 +124,8 @@ export default async function ProceduresPage() {
           </aside>
         </div>
 
-        {/* Le Maire */}
-        <Card className="mt-10">
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-leaf-600 text-lg font-bold text-white">
-              RG
-            </span>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-earth-500">
-                {t.procedures.mayorTitle}
-              </p>
-              <p className="text-base font-bold text-earth-900">{t.home.mayorName}</p>
-              <p className="text-sm text-earth-600">{t.home.mayorRole}</p>
-            </div>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-earth-700">
-              {t.home.mayorText}
-            </p>
-          </div>
-        </Card>
-
         {/* Fokontany */}
-        <section className="mt-8" aria-label={t.procedures.fokontanyTitle}>
+        <section className="mt-10" aria-label={t.procedures.fokontanyTitle}>
           <h2 className="text-lg font-bold text-leaf-900">
             {t.procedures.fokontanyTitle}
           </h2>
