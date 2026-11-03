@@ -1,7 +1,8 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 import { getDb } from "@/lib/db";
 import {
   buildSessionUser,
@@ -92,4 +93,39 @@ export async function register(
 export async function logout(): Promise<void> {
   (await cookies()).set(emptySessionCookie());
   redirect("/");
+}
+
+export async function signInWithGoogle(): Promise<void> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anonKey) {
+    redirect("/hiditra?error=supabase_not_configured");
+  }
+
+  // Détermine l'origine hôte actuelle (localhost ou domaine de production)
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host");
+  const proto =
+    h.get("x-forwarded-proto") || (host?.includes("localhost") ? "http" : "https");
+  const origin = host
+    ? `${proto}://${host}`
+    : (process.env.NEXT_PUBLIC_SITE_URL || "https://viliahazo.org").replace(/\/+$/, "");
+
+  const supabase = createClient(url, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error || !data.url) {
+    console.error("[auth] Google OAuth error:", error?.message);
+    redirect("/hiditra?error=oauth_failed");
+  }
+
+  redirect(data.url);
 }
