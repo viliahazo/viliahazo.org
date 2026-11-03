@@ -1,24 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState } from "react";
 import { Languages } from "lucide-react";
 import { LANG_COOKIE, type Lang } from "@/lib/i18n";
 
 export function LanguageSwitch({ lang }: { lang: Lang }) {
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [switching, setSwitching] = useState(false);
 
   function switchTo(next: Lang) {
-    if (next === lang) return;
+    if (next === lang || switching) return;
+    setSwitching(true);
+
+    // 1. Mémorise le cookie pour toutes les pages et requêtes suivantes
     document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
-    // Même URL + ?lang=fr|mg : la version française reste indexable et
-    // partageable (le proxy mémorise aussi le choix en cookie).
+
+    // 2. Met à jour l'URL avec ?lang=next
     const url = new URL(window.location.href);
     url.searchParams.set("lang", next);
-    startTransition(() =>
-      router.push(`${url.pathname}${url.search}${url.hash}`, { scroll: false }),
-    );
+
+    // 3. Navigation complète : ré-exécute RootLayout (SiteHeader, SiteFooter, html lang)
+    // garantissant que l'en-tête et toute la page s'actualisent sans bug de désynchronisation.
+    window.location.assign(`${url.pathname}${url.search}${url.hash}`);
   }
 
   return (
@@ -34,7 +36,7 @@ export function LanguageSwitch({ lang }: { lang: Lang }) {
           type="button"
           onClick={() => switchTo(code)}
           aria-pressed={lang === code}
-          disabled={pending}
+          disabled={switching}
           className={`rounded-full px-2 py-1 uppercase transition ${
             lang === code
               ? "bg-leaf-600 text-white"

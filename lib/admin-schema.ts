@@ -96,6 +96,7 @@ export const ADMIN_TABLES: AdminTable[] = [
       { name: "categorie", label: "Sokajy", labelFr: "Catégorie", type: "select", required: true, options: CATEGORIES },
       { name: "statut", label: "Toe-javatra", labelFr: "Statut", type: "select", required: true, options: STATUTS_ACTUALITE },
       { name: "auteur", label: "Mpanoratra", labelFr: "Auteur", type: "text" },
+      { name: "image_url", label: "Rohin'ny sary (URL)", labelFr: "URL de l'image", type: "text" },
     ],
   },
   {

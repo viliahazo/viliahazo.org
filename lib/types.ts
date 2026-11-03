@@ -6,6 +6,18 @@ export type Actualite = {
   contenu_fr: string | null;
   categorie: "vaovao" | "fampitandrina" | "hevitra" | "hetsika";
   auteur: string | null;
+  image_url?: string | null;
+  statut: "en_attente" | "publie" | "rejete";
+  created_at: string;
+};
+
+export type ActualiteReply = {
+  id: string;
+  actualite_id: string;
+  auteur_nom: string;
+  auteur_email: string | null;
+  user_id: string | null;
+  message: string;
   statut: "en_attente" | "publie" | "rejete";
   created_at: string;
 };

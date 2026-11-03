@@ -25,6 +25,20 @@ create table if not exists actualites (
   categorie text not null default 'vaovao'
     check (categorie in ('vaovao', 'fampitandrina', 'hevitra', 'hetsika')),
   auteur text,
+  image_url text,
+  statut text not null default 'en_attente'
+    check (statut in ('en_attente', 'publie', 'rejete')),
+  created_at timestamptz not null default now()
+);
+
+-- ---------- Valinteny / Commentaires sur les actualites ----------
+create table if not exists actualite_commentaires (
+  id uuid primary key default gen_random_uuid(),
+  actualite_id uuid not null references actualites(id) on delete cascade,
+  auteur_nom text not null,
+  auteur_email text,
+  user_id uuid references users(id) on delete set null,
+  message text not null,
   statut text not null default 'en_attente'
     check (statut in ('en_attente', 'publie', 'rejete')),
   created_at timestamptz not null default now()
@@ -144,6 +158,7 @@ create table if not exists fiangonana (
 
 -- ---------- Index ----------
 create index if not exists actualites_statut_idx on actualites (statut, created_at desc);
+create index if not exists actualite_commentaires_idx on actualite_commentaires (actualite_id, statut, created_at desc);
 create index if not exists demandes_statut_idx on demandes (statut, created_at desc);
 create index if not exists evenements_date_idx on evenements (date_event);
 
@@ -154,6 +169,7 @@ create index if not exists evenements_date_idx on evenements (date_event);
 -- ============================================================
 alter table users enable row level security;
 alter table actualites enable row level security;
+alter table actualite_commentaires enable row level security;
 alter table demarches enable row level security;
 alter table demandes enable row level security;
 alter table fokontany enable row level security;
@@ -169,6 +185,9 @@ alter table fiangonana enable row level security;
 drop policy if exists "actualites publiees visibles" on actualites;
 create policy "actualites publiees visibles"
   on actualites for select using (statut = 'publie');
+drop policy if exists "commentaires publics visibles" on actualite_commentaires;
+create policy "commentaires publics visibles"
+  on actualite_commentaires for select using (statut = 'publie');
 drop policy if exists "demarches visibles" on demarches;
 create policy "demarches visibles" on demarches for select using (true);
 drop policy if exists "fokontany visibles" on fokontany;

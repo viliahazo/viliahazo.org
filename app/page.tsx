@@ -9,7 +9,13 @@ import {
   Sprout,
 } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
-import { getFokontany, getProcedures, getPublishedNews } from "@/lib/data";
+import {
+  cleanActualiteContent,
+  getActualiteImage,
+  getFokontany,
+  getProcedures,
+  getPublishedNews,
+} from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { sections } from "@/lib/sections";
 import { formatDate } from "@/lib/format";
@@ -199,31 +205,44 @@ export default async function HomePage() {
               </Link>
             </div>
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {news.map((item) => (
-                <li key={item.id}>
-                  <article className="flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge tone={item.categorie === "fampitandrina" ? "amber" : "leaf"}>
-                        {t.news.categories[item.categorie]}
-                      </Badge>
-                      <span className="text-xs text-earth-500">
-                        {formatDate(lang, item.created_at)}
-                      </span>
-                    </div>
-                    <h3 className="mt-3 text-base font-bold text-earth-900">
-                      {pick(lang, item.titre_mg, item.titre_fr)}
-                    </h3>
-                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-earth-600">
-                      {pick(lang, item.contenu_mg, item.contenu_fr)}
-                    </p>
-                    {item.auteur ? (
-                      <p className="mt-auto pt-4 text-xs text-earth-500">
-                        {item.auteur}
+              {news.map((item) => {
+                const image = getActualiteImage(item);
+                return (
+                  <li key={item.id}>
+                    <article className="flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5 transition hover:border-leaf-300">
+                      {image && (
+                        <div className="mb-3 overflow-hidden rounded-xl bg-earth-50">
+                          <img
+                            src={image}
+                            alt={pick(lang, item.titre_mg, item.titre_fr)}
+                            className="h-40 w-full object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge tone={item.categorie === "fampitandrina" ? "amber" : "leaf"}>
+                          {t.news.categories[item.categorie]}
+                        </Badge>
+                        <span className="text-xs text-earth-500">
+                          {formatDate(lang, item.created_at)}
+                        </span>
+                      </div>
+                      <h3 className="mt-3 text-base font-bold text-earth-900">
+                        {pick(lang, item.titre_mg, item.titre_fr)}
+                      </h3>
+                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-earth-600">
+                        {cleanActualiteContent(pick(lang, item.contenu_mg, item.contenu_fr))}
                       </p>
-                    ) : null}
-                  </article>
-                </li>
-              ))}
+                      {item.auteur ? (
+                        <p className="mt-auto pt-4 text-xs text-earth-500">
+                          {item.auteur}
+                        </p>
+                      ) : null}
+                    </article>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>

@@ -85,6 +85,15 @@ export function NewsForm({ isLoggedIn }: { isLoggedIn: boolean }) {
             placeholder={t.news.formContent}
           />
         </Field>
+
+        <Field label={t.news.formImage} hint={t.news.uploadHint}>
+          <input
+            type="file"
+            name="image"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            className={`${inputClass} file:mr-3 file:rounded-lg file:border-0 file:bg-leaf-100 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-leaf-800 hover:file:bg-leaf-200 cursor-pointer`}
+          />
+        </Field>
       </div>
 
       {state?.error ? (

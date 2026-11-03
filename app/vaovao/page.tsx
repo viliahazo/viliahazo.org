@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { AlertTriangle, Newspaper } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
-import { getPublishedNews } from "@/lib/data";
+import {
+  cleanActualiteContent,
+  getActualiteImage,
+  getPublishedNews,
+  getRepliesForActualite,
+} from "@/lib/data";
 import { getSessionUser } from "@/lib/auth";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 import { Badge, EmptyState, PageHero } from "@/components/ui";
 import { NewsForm } from "@/components/news-form";
+import { VaovaoReplies } from "@/components/vaovao-replies";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getLangAndDict();
@@ -22,6 +28,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function NewsPage() {
   const { lang, t } = await getLangAndDict();
   const [news, user] = await Promise.all([getPublishedNews(30), getSessionUser()]);
+
+  // Charge les réponses et images pour chaque actualité
+  const newsWithReplies = await Promise.all(
+    news.map(async (item) => ({
+      item,
+      image: getActualiteImage(item),
+      replies: await getRepliesForActualite(item.id, user),
+    })),
+  );
 
   return (
     <>
@@ -38,13 +53,25 @@ export default async function NewsPage() {
             {t.home.latestNews}
           </h2>
 
-          {news.length === 0 ? (
+          {newsWithReplies.length === 0 ? (
             <EmptyState text={t.news.empty} />
           ) : (
-            <ul className="space-y-4">
-              {news.map((item) => (
+            <ul className="space-y-6">
+              {newsWithReplies.map(({ item, image, replies }) => (
                 <li key={item.id}>
-                  <article className="rounded-2xl border border-earth-200 bg-white p-5 shadow-sm">
+                  <article className="rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:border-leaf-300">
+                    {/* Image Supabase Storage si présente */}
+                    {image && (
+                      <div className="mb-4 overflow-hidden rounded-xl border border-earth-100 bg-earth-50">
+                        <img
+                          src={image}
+                          alt={pick(lang, item.titre_mg, item.titre_fr)}
+                          className="max-h-80 w-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge
                         tone={item.categorie === "fampitandrina" ? "amber" : "leaf"}
@@ -61,12 +88,21 @@ export default async function NewsPage() {
                         <span className="text-xs text-earth-500">· {item.auteur}</span>
                       ) : null}
                     </div>
+
                     <h3 className="mt-3 text-lg font-bold text-earth-900">
                       {pick(lang, item.titre_mg, item.titre_fr)}
                     </h3>
+
                     <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-earth-700">
-                      {pick(lang, item.contenu_mg, item.contenu_fr)}
+                      {cleanActualiteContent(pick(lang, item.contenu_mg, item.contenu_fr))}
                     </p>
+
+                    {/* Section interactive des réponses */}
+                    <VaovaoReplies
+                      actualiteId={item.id}
+                      initialReplies={replies}
+                      currentUser={user}
+                    />
                   </article>
                 </li>
               ))}

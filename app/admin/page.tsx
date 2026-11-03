@@ -5,15 +5,22 @@ import {
   Clock,
   FileText,
   Inbox,
+  MessageSquare,
   ShieldCheck,
   X,
 } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getSessionUser, isAdmin } from "@/lib/auth";
-import { countTableRows, getAllNews, getDemandes } from "@/lib/data";
+import {
+  countTableRows,
+  getAllNews,
+  getDemandes,
+  getPendingReplies,
+} from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
 import { moderateActualite } from "@/app/actions/admin";
+import { moderateReply } from "@/app/actions/news";
 import { setDemandeStatut } from "@/app/actions/content";
 import { ADMIN_TABLES } from "@/lib/admin-schema";
 import { AdminLoginPrompt } from "@/components/admin-login-prompt";
@@ -31,7 +38,7 @@ export default async function AdminPage() {
     );
   }
 
-  const [counts, news, demandes] = await Promise.all([
+  const [counts, news, demandes, pendingReplies] = await Promise.all([
     Promise.all(
       ADMIN_TABLES.map(async (spec) => ({
         spec,
@@ -40,6 +47,7 @@ export default async function AdminPage() {
     ),
     getAllNews(),
     getDemandes(),
+    getPendingReplies(),
   ]);
 
   const pendingNews = news.filter((item) => item.statut === "en_attente");
@@ -159,6 +167,83 @@ export default async function AdminPage() {
                   </Card>
                 </li>
               ))}
+            </ul>
+          )}
+        </section>
+
+        {/* -------------------- Valinteny miandry (Replies) -------------------- */}
+        <section className="mt-10" aria-label={t.admin.pendingReplies}>
+          <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-leaf-900">
+            <MessageSquare className="h-5 w-5 text-leaf-700" aria-hidden />
+            {t.admin.pendingReplies}
+            <Badge tone="amber">{pendingReplies.length}</Badge>
+          </h2>
+
+          {pendingReplies.length === 0 ? (
+            <EmptyState text={t.admin.noPending} />
+          ) : (
+            <ul className="space-y-3">
+              {pendingReplies.map((reply) => {
+                const targetNews = news.find((n) => n.id === reply.actualite_id);
+                return (
+                  <li key={reply.id}>
+                    <Card>
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-earth-900">
+                            {reply.auteur_nom}
+                          </span>
+                          {reply.auteur_email && (
+                            <span className="text-xs text-earth-500">
+                              · {reply.auteur_email}
+                            </span>
+                          )}
+                          <span className="text-xs text-earth-400">
+                            · {formatDate(lang, reply.created_at)}
+                          </span>
+                        </div>
+                        <Badge tone="amber">{t.news.pendingValidation}</Badge>
+                      </div>
+
+                      {targetNews && (
+                        <p className="mt-1 text-xs text-leaf-800 font-medium">
+                          {t.admin.replyOn}: &ldquo;{pick(lang, targetNews.titre_mg, targetNews.titre_fr)}&rdquo;
+                        </p>
+                      )}
+
+                      <p className="mt-2 text-sm text-earth-800 leading-relaxed whitespace-pre-line">
+                        {reply.message}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap items-center gap-2">
+                        <form action={moderateReply}>
+                          <input type="hidden" name="id" value={reply.id} />
+                          <input type="hidden" name="statut" value="publie" />
+                          <button
+                            type="submit"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-leaf-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-leaf-700"
+                          >
+                            <Check className="h-3.5 w-3.5" aria-hidden />
+                            {t.admin.makePublic}
+                          </button>
+                        </form>
+
+                        <form action={moderateReply}>
+                          <input type="hidden" name="id" value={reply.id} />
+                          <input type="hidden" name="statut" value="rejete" />
+                          <button
+                            type="submit"
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-800 hover:bg-red-100"
+                          >
+                            <X className="h-3.5 w-3.5" aria-hidden />
+                            {t.admin.reject}
+                          </button>
+                        </form>
+                      </div>
+                    </Card>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>
