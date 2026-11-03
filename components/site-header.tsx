@@ -25,6 +25,8 @@ const links = [
   { href: "/fitaterana", key: "transport" },
   { href: "/asa", key: "jobs" },
   { href: "/hetsika", key: "events" },
+  { href: "/fokontany", key: "fokontany" },
+  { href: "/mifandraisa", key: "contact" },
 ] as const;
 
 export function SiteHeader({

@@ -53,6 +53,16 @@ export function SiteFooter({ t }: { t: Dictionary }) {
                 {t.nav.events}
               </Link>
             </li>
+            <li>
+              <Link href="/fokontany" className="hover:underline">
+                {t.nav.fokontany}
+              </Link>
+            </li>
+            <li>
+              <Link href="/mifandraisa" className="hover:underline">
+                {t.nav.contact}
+              </Link>
+            </li>
           </ul>
         </div>
 

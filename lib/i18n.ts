@@ -51,6 +51,8 @@ const mg = {
     transport: "Fitaterana",
     jobs: "Asa",
     events: "Hetsika",
+    fokontany: "Fokontany",
+    contact: "Mifandraisa",
     admin: "Fitantanana",
     login: "Hiditra",
     register: "Hamorona kaonty",
@@ -84,6 +86,35 @@ const mg = {
     statsFree: "Maimaim-poana",
     contactTitle: "Mifandraisa amin'ny Kaominina",
     contactText: "Alatsinainy ka hatramin'ny Zoma, 7:30 - 16:00",
+  },
+  fokontany: {
+    title: "Ny Fokontany 8",
+    subtitle:
+      "Mifandraisa amin'ny fokontany misy anao raha mila fanampiana eo an-toerana. Ny lehiben'ny fokontany no mpisolo toerana azo ifandraisana voalohany.",
+    chief: "Lehiben'ny fokontany",
+    contact: "Fifandraisana",
+    noContact: "Tsy misy nomerao",
+    viewAll: "Hijery ny fokontany rehetra",
+    empty: "Tsy mbola misy fokontany voarakitra.",
+  },
+  mifandraisa: {
+    title: "Mifandraisa aminay",
+    subtitle:
+      "Alefaso ny fanontanianao na ny hatakao. Ny mpiasa kaominina dia hamaly anao ao anatin'ny 48 ora.",
+    formTitle: "Alefa hafatra",
+    formName: "Anarana feno",
+    formEmail: "Mailaka",
+    formPhone: "Nomeraon-telefaona",
+    formMessage: "Ny hafatrao",
+    formSend: "Alefa hafatra",
+    addressTitle: "Adiresy ofisialy",
+    hoursTitle: "Ora fisokafana",
+    hoursMon: "Alatsinainy – Zoma",
+    hoursSat: "Sabotsy",
+    hoursClosed: "Voarindrina",
+    fokontanyTitle: "Ny Fokontany 8",
+    fokontanyText:
+      "Mifandraisa amin'ny fokontany misy anao raha mila fanampiana eo an-toerana.",
   },
   sections: {
     news: {
@@ -337,6 +368,8 @@ const fr: Dictionary = {
     transport: "Transports",
     jobs: "Emploi",
     events: "Événements",
+    fokontany: "Fokontany",
+    contact: "Contact",
     admin: "Administration",
     login: "Connexion",
     register: "Créer un compte",
@@ -370,6 +403,35 @@ const fr: Dictionary = {
     statsFree: "Gratuit",
     contactTitle: "Contacter la commune",
     contactText: "Du lundi au vendredi, 7h30 - 16h00",
+  },
+  fokontany: {
+    title: "Les 8 Fokontany",
+    subtitle:
+      "Contactez le fokontany de votre quartier pour une assistance locale. Le chef de fokontany est votre premier interlocuteur.",
+    chief: "Chef de fokontany",
+    contact: "Contact",
+    noContact: "Aucun numéro",
+    viewAll: "Voir tous les fokontany",
+    empty: "Aucun fokontany enregistré.",
+  },
+  mifandraisa: {
+    title: "Nous contacter",
+    subtitle:
+      "Envoyez votre question ou votre demande. Un agent de la commune vous répondra dans les 48 heures.",
+    formTitle: "Envoyer un message",
+    formName: "Nom complet",
+    formEmail: "E-mail",
+    formPhone: "Numéro de téléphone",
+    formMessage: "Votre message",
+    formSend: "Envoyer le message",
+    addressTitle: "Adresse officielle",
+    hoursTitle: "Horaires d'ouverture",
+    hoursMon: "Lundi – Vendredi",
+    hoursSat: "Samedi",
+    hoursClosed: "Fermé",
+    fokontanyTitle: "Les 8 Fokontany",
+    fokontanyText:
+      "Contactez votre fokontany pour une assistance locale.",
   },
   sections: {
     news: {

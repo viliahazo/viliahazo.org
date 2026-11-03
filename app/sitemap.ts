@@ -7,10 +7,12 @@ const WEIGHTS: Record<string, { priority: number; changeFrequency: MetadataRoute
   "/": { priority: 1, changeFrequency: "daily" },
   "/vaovao": { priority: 0.9, changeFrequency: "daily" },
   "/taratasy": { priority: 0.8, changeFrequency: "weekly" },
+  "/fokontany": { priority: 0.8, changeFrequency: "monthly" },
   "/trano": { priority: 0.7, changeFrequency: "monthly" },
   "/fitaterana": { priority: 0.7, changeFrequency: "monthly" },
   "/asa": { priority: 0.7, changeFrequency: "weekly" },
   "/hetsika": { priority: 0.6, changeFrequency: "weekly" },
+  "/mifandraisa": { priority: 0.6, changeFrequency: "monthly" },
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {

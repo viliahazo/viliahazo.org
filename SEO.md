@@ -1,27 +1,5 @@
 # SEO.md - Viliahazo Municipal Website
 
-## Verified Information (Source-Checked)
-
-**Location:** Viliahazo is a rural municipality (kaominina) in the Antananarivo-Avaradrano District, Analamanga Region, Central Highlands of Madagascar.
-
-**Administrative Structure:** It is officially composed of exactly 8 Fokontany (neighborhoods). Based on site data and geographic records, these include:
-- Anjomakely
-- Anjoma Betoho
-- Ambodivoara
-- Antsahamalaza
-- Manakana
-- Ambatoharanana
-- Soavinarivo
-- Antanambao
-
-**Leadership:** The Mayor (Ben'ny tanana) is Gabriel Rolland Randriamanantena (also known locally as Haja Randriamanantena).
-
-**Website Reality Check:** The domain viliahazo.org is real and has a valid sitemap.xml and robots.txt. However, it currently uses placeholder phone numbers (e.g., 034 00 000 00), suffers from client-side routing 404 errors, and lacks Local SEO schema markup.
-
----
-
-## Prompt for Codex / AI Coding Assistant
-
 **Role:** You are an expert Full-Stack Web Developer and Technical SEO Specialist.
 
 **Task:** Build, refactor, or optimize the official municipal website for Kaominina Viliahazo (viliahazo.org), a rural municipality in the Analamanga Region of Madagascar.

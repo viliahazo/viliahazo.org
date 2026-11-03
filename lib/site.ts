@@ -33,5 +33,5 @@ export const PUBLIC_PATHS = [
   "/fitaterana",
   "/asa",
   "/hetsika",
-  "/contact",
+  "/mifandraisa",
 ] as const;
