@@ -283,7 +283,7 @@ export const ADMIN_TABLES: AdminTable[] = [
     description: "Kaonty mponina sy mpitantana. Ny tenimiafina dia tsy aseho mihitsy.",
     descriptionFr: "Comptes citoyens et administrateurs. Les mots de passe ne sont jamais affichés.",
     order: { column: "created_at", ascending: false },
-    list: ["nom", "email", "role", "created_at"],
+    list: ["nom", "email", "auth_provider", "role", "created_at"],
     canCreate: true,
     fields: [
       { name: "nom", label: "Anarana", labelFr: "Nom", type: "text", required: true },

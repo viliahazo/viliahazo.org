@@ -10,8 +10,33 @@ function fieldOf(spec: AdminTable, column: string) {
 export function fieldLabel(spec: AdminTable, name: string, lang: Lang): string {
   const field = fieldOf(spec, name);
   if (field) return lang === "fr" ? field.labelFr : field.label;
+  if (name === "auth_provider") {
+    return lang === "fr" ? "Méthode d'inscription" : "Fomba fidirana";
+  }
   if (name === "created_at") return lang === "fr" ? "Créé le" : "Daty";
   return name;
+}
+
+/** Identifie le moyen de connexion (Google OAuth vs Email/Mot de passe). */
+export function getAuthProviderInfo(row: Record<string, unknown>, lang: Lang) {
+  const hash = String(row.password_hash ?? "");
+  if (hash.startsWith("oauth:google") || hash === "oauth:google") {
+    return {
+      provider: "google" as const,
+      label: "Google",
+    };
+  }
+  if (hash.startsWith("oauth:")) {
+    const prov = hash.replace("oauth:", "");
+    return {
+      provider: prov,
+      label: prov.charAt(0).toUpperCase() + prov.slice(1),
+    };
+  }
+  return {
+    provider: "email" as const,
+    label: lang === "fr" ? "E-mail" : "Mailaka",
+  };
 }
 
 /** Valeur d'une cellule, lisible et localisée. */
@@ -20,7 +45,12 @@ export function formatCell(
   column: string,
   value: unknown,
   lang: Lang,
+  row?: Record<string, unknown>,
 ): string {
+  if (column === "auth_provider" && row) {
+    return getAuthProviderInfo(row, lang).label;
+  }
+
   if (value === null || value === undefined || value === "") return "—";
 
   if (Array.isArray(value)) {

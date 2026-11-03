@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Pencil, Plus, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Globe, Mail, Pencil, Plus, ShieldCheck } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getSessionUser, isAdmin } from "@/lib/auth";
 import { getTableRows } from "@/lib/data";
 import { NO_INDEX } from "@/lib/seo";
 import { getAdminTable } from "@/lib/admin-schema";
-import { fieldLabel, formatCell } from "@/lib/admin-format";
+import { fieldLabel, formatCell, getAuthProviderInfo } from "@/lib/admin-format";
 import { AdminLoginPrompt } from "@/components/admin-login-prompt";
 import { AdminDeleteForm } from "@/components/admin-delete-form";
+import { GoogleIcon } from "@/components/icons";
 import { Badge, PageHero } from "@/components/ui";
 
 type Params = { params: Promise<{ table: string }> };
@@ -103,7 +104,7 @@ export default async function AdminTablePage({ params }: Params) {
                   return (
                     <tr key={id} className="align-top hover:bg-leaf-50/40">
                       {spec.list.map((column, index) => {
-                        const text = formatCell(spec, column, row[column], lang);
+                        const text = formatCell(spec, column, row[column], lang, row);
                         return (
                           <td
                             key={column}
@@ -111,7 +112,33 @@ export default async function AdminTablePage({ params }: Params) {
                               index === 0 ? "font-semibold text-earth-900" : "text-earth-700"
                             }`}
                           >
-                            {column === "statut" ? (
+                            {column === "auth_provider" ? (
+                              (() => {
+                                const authInfo = getAuthProviderInfo(row, lang);
+                                if (authInfo.provider === "google") {
+                                  return (
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                                      <GoogleIcon className="h-3 w-3" />
+                                      <span>Google</span>
+                                    </span>
+                                  );
+                                }
+                                if (authInfo.provider === "email") {
+                                  return (
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-earth-200 bg-earth-50 px-2.5 py-0.5 text-xs font-medium text-earth-700">
+                                      <Mail className="h-3 w-3 text-earth-500" aria-hidden />
+                                      <span>{authInfo.label}</span>
+                                    </span>
+                                  );
+                                }
+                                return (
+                                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                                    <Globe className="h-3 w-3" aria-hidden />
+                                    <span>{authInfo.label}</span>
+                                  </span>
+                                );
+                              })()
+                            ) : column === "statut" ? (
                               <Badge tone={statutTone(row[column])}>{text}</Badge>
                             ) : (
                               <span className="line-clamp-2">{text}</span>

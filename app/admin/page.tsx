@@ -5,6 +5,7 @@ import {
   Clock,
   FileText,
   Inbox,
+  Mail,
   MessageSquare,
   ShieldCheck,
   X,
@@ -16,6 +17,7 @@ import {
   getAllNews,
   getDemandes,
   getPendingReplies,
+  getTableRows,
 } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
@@ -24,6 +26,7 @@ import { moderateReply } from "@/app/actions/news";
 import { setDemandeStatut } from "@/app/actions/content";
 import { ADMIN_TABLES } from "@/lib/admin-schema";
 import { AdminLoginPrompt } from "@/components/admin-login-prompt";
+import { GoogleIcon } from "@/components/icons";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 
 export default async function AdminPage() {
@@ -38,7 +41,7 @@ export default async function AdminPage() {
     );
   }
 
-  const [counts, news, demandes, pendingReplies] = await Promise.all([
+  const [counts, news, demandes, pendingReplies, allUsers] = await Promise.all([
     Promise.all(
       ADMIN_TABLES.map(async (spec) => ({
         spec,
@@ -48,7 +51,16 @@ export default async function AdminPage() {
     getAllNews(),
     getDemandes(),
     getPendingReplies(),
+    getTableRows<Record<string, unknown>>("users", {
+      column: "created_at",
+      ascending: false,
+    }),
   ]);
+
+  const googleUserCount = allUsers.filter((u) =>
+    String(u.password_hash ?? "").startsWith("oauth:google"),
+  ).length;
+  const emailUserCount = allUsers.length - googleUserCount;
 
   const pendingNews = news.filter((item) => item.statut === "en_attente");
   const openDemandes = demandes.filter((item) => item.statut === "en_attente");
@@ -87,6 +99,17 @@ export default async function AdminPage() {
                   <p className="mt-2 flex-1 text-xs leading-relaxed text-earth-600">
                     {lang === "fr" ? spec.descriptionFr : spec.description}
                   </p>
+                  {spec.key === "users" && count > 0 && (
+                    <div className="mt-2.5 flex items-center gap-2 border-t border-earth-100 pt-2 text-[11px]">
+                      <span className="inline-flex items-center gap-1 font-semibold text-blue-700">
+                        <GoogleIcon className="h-3 w-3" /> {googleUserCount} Google
+                      </span>
+                      <span className="text-earth-300">·</span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-earth-700">
+                        <Mail className="h-3 w-3 text-earth-400" /> {emailUserCount} {lang === "fr" ? "E-mail" : "Mailaka"}
+                      </span>
+                    </div>
+                  )}
                   <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-leaf-700">
                     {t.admin.openList}
                     <ArrowRight className="h-3.5 w-3.5" aria-hidden />
