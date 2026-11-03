@@ -156,11 +156,61 @@ create table if not exists fiangonana (
   adresse text
 );
 
+-- ---------- Sekoly, CSB sy sampana fanjakana (Établissements publics) ----------
+create table if not exists etablissements (
+  id uuid primary key default gen_random_uuid(),
+  nom text not null,
+  type text not null default 'autre'
+    check (type in ('epp', 'ceg', 'lycee', 'csb', 'mairie', 'autre')),
+  directeur text,
+  contact text,
+  adresse text,
+  description_mg text,
+  description_fr text,
+  fokontany_id uuid references fokontany(id) on delete set null,
+  ordre int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+-- ---------- Vaovao avy amin'ny sekoly / CSB / sampana ----------
+create table if not exists etablissement_actualites (
+  id uuid primary key default gen_random_uuid(),
+  etablissement_id uuid not null references etablissements(id) on delete cascade,
+  titre_mg text not null,
+  titre_fr text,
+  contenu_mg text not null,
+  contenu_fr text,
+  image_url text,
+  auteur text,
+  statut text not null default 'en_attente'
+    check (statut in ('en_attente', 'publie', 'rejete')),
+  created_at timestamptz not null default now()
+);
+
+-- ---------- Vaovao avy amin'ny fiangonana (Church news) ----------
+create table if not exists fiangonana_actualites (
+  id uuid primary key default gen_random_uuid(),
+  fiangonana_id uuid not null references fiangonana(id) on delete cascade,
+  titre_mg text not null,
+  titre_fr text,
+  contenu_mg text not null,
+  contenu_fr text,
+  image_url text,
+  auteur text,
+  statut text not null default 'en_attente'
+    check (statut in ('en_attente', 'publie', 'rejete')),
+  created_at timestamptz not null default now()
+);
+
 -- ---------- Index ----------
 create index if not exists actualites_statut_idx on actualites (statut, created_at desc);
 create index if not exists actualite_commentaires_idx on actualite_commentaires (actualite_id, statut, created_at desc);
 create index if not exists demandes_statut_idx on demandes (statut, created_at desc);
 create index if not exists evenements_date_idx on evenements (date_event);
+create index if not exists etablissements_type_idx on etablissements (type, ordre);
+create index if not exists etab_actualites_etab_idx on etablissement_actualites (etablissement_id, statut, created_at desc);
+create index if not exists etab_actualites_statut_idx on etablissement_actualites (statut, created_at desc);
+create index if not exists fiangonana_actualites_idx on fiangonana_actualites (fiangonana_id, statut, created_at desc);
 
 -- ============================================================
 --  Securite : RLS active. Aucune policy publique :
@@ -179,6 +229,9 @@ alter table emplois enable row level security;
 alter table services_municipaux enable row level security;
 alter table evenements enable row level security;
 alter table fiangonana enable row level security;
+alter table etablissements enable row level security;
+alter table etablissement_actualites enable row level security;
+alter table fiangonana_actualites enable row level security;
 
 -- Lecture publique des contenus publies uniquement (optionnel, utile si
 -- vous ajoutez plus tard un acces direct avec la cle anon).
@@ -204,6 +257,14 @@ drop policy if exists "evenements visibles" on evenements;
 create policy "evenements visibles" on evenements for select using (true);
 drop policy if exists "fiangonana visibles" on fiangonana;
 create policy "fiangonana visibles" on fiangonana for select using (true);
+drop policy if exists "etablissements visibles" on etablissements;
+create policy "etablissements visibles" on etablissements for select using (true);
+drop policy if exists "etab actualites publiees visibles" on etablissement_actualites;
+create policy "etab actualites publiees visibles"
+  on etablissement_actualites for select using (statut = 'publie');
+drop policy if exists "fiangonana actualites publiees visibles" on fiangonana_actualites;
+create policy "fiangonana actualites publiees visibles"
+  on fiangonana_actualites for select using (statut = 'publie');
 
 -- ============================================================
 --  Synchronisation automatique auth.users -> public.users

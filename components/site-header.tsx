@@ -10,6 +10,7 @@ import {
   LogOut,
   Mail,
   Menu,
+  School,
   Sprout,
   UserRound,
   Users,
@@ -31,6 +32,7 @@ const primaryLinks = [
 
 /** Liens institutionnels / territoire regroupés dans le menu "Bebe kokoa / Plus". */
 const secondaryLinks = [
+  { href: "/fianarana", key: "schools", icon: School },
   { href: "/fokontany", key: "fokontany", icon: Users },
   { href: "/mifandraisa", key: "contact", icon: Mail },
 ] as const;
@@ -39,6 +41,7 @@ const secondaryLinks = [
 const mobileLinks = [
   { href: "/", key: "home" },
   ...primaryLinks,
+  { href: "/fianarana", key: "schools" },
   { href: "/fokontany", key: "fokontany" },
   { href: "/mifandraisa", key: "contact" },
 ] as const;

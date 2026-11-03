@@ -7,8 +7,11 @@ import type {
   Demarche,
   Demande,
   Emploi,
+  Etablissement,
+  EtablissementActualite,
   Evenement,
   Fiangonana,
+  FiangonanaActualite,
   Fokontany,
   ServiceMunicipal,
   TransportLigne,
@@ -58,6 +61,82 @@ export function getEvenements() {
 
 export function getFiangonana() {
   return selectRows<Fiangonana>("fiangonana", { order: { column: "nom" } });
+}
+
+export function getPublishedFiangonanaActualites(limit = 20) {
+  return selectRows<FiangonanaActualite>("fiangonana_actualites", {
+    eq: { column: "statut", value: "publie" },
+    order: { column: "created_at", ascending: false },
+    limit,
+  });
+}
+
+export async function getFiangonanaActualites(
+  fiangonanaId: string,
+  limit = 20,
+): Promise<FiangonanaActualite[]> {
+  const db = getDb();
+  if (!db) return [];
+  const { data, error } = await db
+    .from("fiangonana_actualites")
+    .select("*")
+    .eq("fiangonana_id", fiangonanaId)
+    .eq("statut", "publie")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) {
+    console.error(`[db] fiangonana_actualites: ${error.message}`);
+    return [];
+  }
+  return (data ?? []) as FiangonanaActualite[];
+}
+
+export function getEtablissements() {
+  return selectRows<Etablissement>("etablissements", {
+    order: { column: "ordre", ascending: true },
+  });
+}
+
+export function getEtablissementsByType(type: string) {
+  return selectRows<Etablissement>("etablissements", {
+    eq: { column: "type", value: type },
+    order: { column: "ordre", ascending: true },
+  });
+}
+
+export async function getEtablissementActualites(
+  etablissementId: string,
+  limit = 20,
+): Promise<EtablissementActualite[]> {
+  const db = getDb();
+  if (!db) return [];
+  const { data, error } = await db
+    .from("etablissement_actualites")
+    .select("*")
+    .eq("etablissement_id", etablissementId)
+    .eq("statut", "publie")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) {
+    console.error(`[db] etablissement_actualites: ${error.message}`);
+    return [];
+  }
+  return (data ?? []) as EtablissementActualite[];
+}
+
+export function getPublishedEtabActualites(limit = 20) {
+  return selectRows<EtablissementActualite>("etablissement_actualites", {
+    eq: { column: "statut", value: "publie" },
+    order: { column: "created_at", ascending: false },
+    limit,
+  });
+}
+
+export function getAllEtabActualites(limit = 100) {
+  return selectRows<EtablissementActualite>("etablissement_actualites", {
+    order: { column: "created_at", ascending: false },
+    limit,
+  });
 }
 
 export function getDemandes() {

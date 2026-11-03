@@ -16,6 +16,7 @@ import {
   MapPin,
   Phone,
   Repeat2,
+  School,
   Search,
   Sprout,
   Star,
@@ -133,6 +134,7 @@ export default async function HomePage() {
                   { href: "/fokontany", icon: MapPin, label: t.home.shortcutFokontany },
                   { href: "/trano", icon: House, label: t.home.shortcutHelp },
                   { href: "/fitaterana", icon: Bus, label: t.home.shortcutTransport },
+                  { href: "/fianarana", icon: School, label: lang === "mg" ? "Sekoly & CSB" : "Écoles & Santé" },
                   { href: "/asa", icon: BriefcaseBusiness, label: lang === "mg" ? "Asa vaovao" : "Offres d'emploi" },
                   { href: "/hetsika", icon: Calendar, label: lang === "mg" ? "Hetsika" : "Événements" },
                 ].map(({ href, icon: Icon, label }) => (

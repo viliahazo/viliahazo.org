@@ -10,7 +10,8 @@ declare
 begin
   foreach t in array array[
     'actualites', 'demarches', 'fokontany', 'aides_sociales',
-    'transport_lignes', 'emplois', 'services_municipaux', 'evenements', 'fiangonana'
+    'transport_lignes', 'emplois', 'services_municipaux', 'evenements', 'fiangonana',
+    'etablissements', 'etablissement_actualites', 'fiangonana_actualites'
   ] loop
     if to_regclass('public.' || t) is null then
       raise exception 'Table % introuvable : executez schema.sql avant seed.sql.', t;
@@ -19,7 +20,8 @@ begin
 end $$;
 
 truncate actualites, demarches, fokontany, aides_sociales,
-  transport_lignes, emplois, services_municipaux, evenements, fiangonana
+  transport_lignes, emplois, services_municipaux, evenements, fiangonana,
+  etablissements, etablissement_actualites, fiangonana_actualites
   restart identity cascade;
 
 -- ---------- Vaovao ----------
@@ -158,3 +160,46 @@ insert into fiangonana (nom, responsable, horaire_mg, horaire_fr, contact, adres
 ('Fiangonana FJKM', 'Pastora Paul RAZAFY', 'Alahady 9:00', 'Dimanche 9h', '034 00 000 42', 'Anjoma Betoho'),
 ('Fiangonana Anglikana', 'Pretra Simon ANDRIA', 'Alahady 7:30', 'Dimanche 7h30', '034 00 000 43', 'Ambodivoara'),
 ('Moskea', 'Imam Abdallah', 'Zoma 12:30', 'Vendredi 12h30', '034 00 000 44', 'Viliahazo afovoany');
+
+-- ---------- Etablissements publics (Sekoly, CSB, Kaominina) ----------
+insert into etablissements (id, nom, type, directeur, contact, adresse, description_mg, description_fr, ordre) values
+('e0000000-0000-0000-0000-000000000001', 'EPP Viliahazo Afovoany', 'epp', 'RANDRIANARISOA Michel', '034 00 000 50', 'Viliahazo afovoany', 'Sekoly ambaratonga voalohany mandray mpianatra manomboka amin''ny 6 taona. Misy trano fianarana 8 sy kianja filalaovana.', 'École primaire publique accueillant les enfants dès 6 ans. Dispose de 8 salles de classe et d''un terrain de jeu.', 1),
+('e0000000-0000-0000-0000-000000000002', 'CEG Viliahazo', 'ceg', 'RAKOTONDRASOA Fara', '034 00 000 51', 'Ambodivoara', 'Sekoly ambaratonga faharoa (6ème hatramin''ny 3ème). Fampianarana ankapobeny sy siansa.', 'Collège d''enseignement général de la 6ème à la 3ème. Enseignement général et scientifique.', 2),
+('e0000000-0000-0000-0000-000000000003', 'CSB II Viliahazo (Tobim-pahasalamana)', 'csb', 'Dr. ANDRIAMBOLOLONA Hery', '034 00 000 52', 'Viliahazo afovoany', 'Tobim-pahasalamana fototra ambaratonga faharoa : fizahana marary, fanaovam-baksiny, fiterahana maimaim-poana, fikarakarana vonjy taitra.', 'Centre de Santé de Base niveau II : consultations générales, vaccinations, maternité gratuite et urgences de base.', 3),
+('e0000000-0000-0000-0000-000000000004', 'EPP Anjomakely', 'epp', 'RASOANIRINA Jeanne', '034 00 000 53', 'Anjomakely', 'Sekoly ambaratonga voalohany ho an''ny fokontany Anjomakely sy ny manodidina.', 'École primaire publique pour le fokontany d''Anjomakely et ses environs.', 4);
+
+-- ---------- Vaovao avy amin''ny sekoly sy CSB ----------
+insert into etablissement_actualites (etablissement_id, titre_mg, titre_fr, contenu_mg, contenu_fr, auteur, statut) values
+('e0000000-0000-0000-0000-000000000003', 'Fanaovam-baksiny maimaim-poana ho an''ny zaza sy reny bevohoka', 'Campagne de vaccination gratuite pour nourrissons et femmes enceintes',
+ 'Manomboka ny alatsinainy ho avy izao ny fanaovam-baksiny fiarovana amin''ny lefakozatra, kitrotro ary tetanosy ao amin''ny CSB II Viliahazo. Maimaim-poana tanteraka ny fandraisana an-tanana.',
+ 'La campagne de vaccination contre la polio, la rougeole et le tétanos débute lundi prochain au CSB II Viliahazo. Prise en charge 100% gratuite.',
+ 'Dr. Hery (Médecin Chef CSB II)', 'publie'),
+('e0000000-0000-0000-0000-000000000001', 'Fizarana fitaovam-pianarana ho an''ny mpianatra kilasy T1 (CP)', 'Distribution de kits scolaires aux élèves de CP',
+ 'Hotsinjaraina maimaim-poana ny kitapo, kahie ary penina ho an''ireo mpianatra vaovao miditra amin''ny kilasy T1 ao amin''ny EPP Viliahazo Afovoany.',
+ 'Distribution gratuite de cartables, cahiers et stylos pour les nouveaux élèves de CP à l''EPP Viliahazo Afovoany.',
+ 'Talen''ny EPP', 'publie');
+
+-- ---------- Vaovao avy amin''ny fiangonana ----------
+insert into fiangonana_actualites (fiangonana_id, titre_mg, titre_fr, contenu_mg, contenu_fr, auteur, statut)
+select id,
+  'Lamesa lehibe sy fankalazana ny Taombaovao',
+  'Messe solennelle et action de grâce du Nouvel An',
+  'Asaina ny kristianina rehetra hanatrika ny fotoam-pivavahana lehibe sy firahalahiana hotanterahina amin''ny alahady maraina.',
+  'Tous les fidèles sont conviés à la messe solennelle et fraternelle organisée ce dimanche matin.',
+  'Komitin''ny Fiangonana',
+  'publie'
+from fiangonana
+where nom like '%Katolika%'
+limit 1;
+
+insert into fiangonana_actualites (fiangonana_id, titre_mg, titre_fr, contenu_mg, contenu_fr, auteur, statut)
+select id,
+  'Fivorian''ny Antoko Mpihira sy Tanora',
+  'Rassemblement de la chorale et des jeunes',
+  'Hetsika fiderana sy fizarana sakafo ho an''ny tanora ny asabotsy tolakandro manomboka amin''ny 2 ora.',
+  'Après-midi de louange et moment de partage pour les jeunes ce samedi à partir de 14h.',
+  'Biraon''ny Tanora',
+  'publie'
+from fiangonana
+where nom like '%FJKM%' or nom like '%Loterana%'
+limit 1;

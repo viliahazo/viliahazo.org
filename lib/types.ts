@@ -116,6 +116,47 @@ export type Fiangonana = {
   adresse: string | null;
 };
 
+export type FiangonanaActualite = {
+  id: string;
+  fiangonana_id: string;
+  titre_mg: string;
+  titre_fr: string | null;
+  contenu_mg: string;
+  contenu_fr: string | null;
+  image_url: string | null;
+  statut: "en_attente" | "publie" | "rejete";
+  auteur: string | null;
+  created_at: string;
+};
+
+export type EtablissementType = "epp" | "ceg" | "lycee" | "csb" | "mairie" | "autre";
+
+export type Etablissement = {
+  id: string;
+  nom: string;
+  type: EtablissementType;
+  directeur: string | null;
+  contact: string | null;
+  adresse: string | null;
+  description_mg: string | null;
+  description_fr: string | null;
+  fokontany_id: string | null;
+  ordre: number | null;
+};
+
+export type EtablissementActualite = {
+  id: string;
+  etablissement_id: string;
+  titre_mg: string;
+  titre_fr: string | null;
+  contenu_mg: string;
+  contenu_fr: string | null;
+  image_url: string | null;
+  statut: "en_attente" | "publie" | "rejete";
+  auteur: string | null;
+  created_at: string;
+};
+
 export type User = {
   id: string;
   nom: string;

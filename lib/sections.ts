@@ -5,6 +5,7 @@ import {
   House,
   Newspaper,
   PartyPopper,
+  School,
   type LucideIcon,
 } from "lucide-react";
 
@@ -14,7 +15,8 @@ export type SectionKey =
   | "housing"
   | "transport"
   | "jobs"
-  | "events";
+  | "events"
+  | "etablissements";
 
 export type Section = {
   key: SectionKey;
@@ -60,5 +62,11 @@ export const sections: Section[] = [
     href: "/hetsika",
     icon: PartyPopper,
     tone: "bg-rose-50 text-rose-700",
+  },
+  {
+    key: "etablissements",
+    href: "/fianarana",
+    icon: School,
+    tone: "bg-indigo-50 text-indigo-700",
   },
 ];
