@@ -51,7 +51,7 @@ export default function OpengraphImage() {
             Ny vaovao sy ny serivisy rehetra
           </div>
           <div style={{ fontSize: 62, fontWeight: 800, lineHeight: 1.15, letterSpacing: -1.5 }}>
-            ao Viliahazo, amin&apos;ny toerana iray.
+            eto Viliahazo, amin&apos;ny toerana iray.
           </div>
           <div style={{ marginTop: 26, fontSize: 26, color: "#e0efe0" }}>
             Vaovao · Taratasy · Trano sy fanampiana · Fitaterana · Asa · Hetsika

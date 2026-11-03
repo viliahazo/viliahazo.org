@@ -13,7 +13,7 @@ import { SITE_NAME, SITE_ORG, SITE_URL } from "@/lib/site";
 
 const DEFAULT_TITLE = `${SITE_NAME} — Vaovao sy serivisy ho an'ny mponina`;
 const DEFAULT_DESCRIPTION =
-  "Sehatra ofisialy ho an'ny mponina ao Viliahazo: vaovao, taratasy sy fitantanana, trano sy fanampiana sosialy, fitaterana, asa ary hetsika kolontsaina. / Plateforme officielle de la commune rurale de Viliahazo (Madagascar).";
+  "Sehatra ofisialy ho an'ny mponina eto Viliahazo: vaovao, taratasy sy fitantanana, trano sy fanampiana sosialy, fitaterana, asa ary hetsika kolontsaina. / Plateforme officielle de la commune rurale de Viliahazo (Madagascar).";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

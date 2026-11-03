@@ -4,7 +4,7 @@ import { NO_INDEX } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Hamorona kaonty",
-  description: "Hamorona kaonty tsotra ho an'ny mponina ao Viliahazo.",
+  description: "Hamorona kaonty tsotra ho an'ny mponina eto Viliahazo.",
   robots: NO_INDEX,
 };
 

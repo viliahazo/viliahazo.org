@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${SITE_NAME} — Vaovao sy serivisy ho an'ny mponina`,
     short_name: SITE_NAME,
     description:
-      "Sehatra ofisialy ho an'ny mponina ao Viliahazo: vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary hetsika kolontsaina.",
+      "Sehatra ofisialy ho an'ny mponina eto Viliahazo: vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary hetsika kolontsaina.",
     start_url: "/",
     display: "standalone",
     background_color: "#fbf7f0",

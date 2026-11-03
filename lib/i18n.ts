@@ -63,7 +63,7 @@ const mg = {
   },
   home: {
     badge: "Tongasoa eto Viliahazo",
-    title: "Ny vaovao sy ny serivisy rehetra ao Viliahazo, amin'ny toerana iray.",
+    title: "Ny vaovao sy ny serivisy rehetra eto Viliahazo, amin'ny toerana iray.",
     text: "Jereo ny vaovao farany eto an-tanàna, ny taratasy ilainao, ny fanampiana sosialy, ny fitaterana, ny asa ary ny hetsika kolontsaina — mora, haingana ary azo ampiasaina amin'ny finday.",
     ctaNews: "Jereo ny vaovao",
     ctaProcedures: "Hangataka taratasy",
@@ -75,7 +75,7 @@ const mg = {
     mayorName: "RANDRIAMANANTENA Gabriel Rolland",
     mayorRole: "Ben'ny tanàna · Viliahazo",
     mayorText:
-      "Miarahaba anareo mponina rehetra ao Viliahazo. Ity sehatra ity dia natao hanamora ny fifandraisana misy antsika: ny fampahafantarana, ny fangatahana taratasy ary ny feo sy hevitra avy aminareo.",
+      "Miarahaba anareo mponina rehetra eto Viliahazo. Ity sehatra ity dia natao hanamora ny fifandraisana misy antsika: ny fampahafantarana, ny fangatahana taratasy ary ny feo sy hevitra avy aminareo.",
     fokontanyTitle: "Ny fokontany 8",
     fokontanyText: "Mifandraisa amin'ny fokontany misy anao raha mila fanampiana eo an-toerana.",
     statsCitizens: "Mponina tombanana",
@@ -287,7 +287,7 @@ const mg = {
   },
   footer: {
     about:
-      "Sehatra ofisialy ho an'ny mponina ao Viliahazo : vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary kolontsaina.",
+      "Sehatra ofisialy ho an'ny mponina eto Viliahazo : vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary kolontsaina.",
     links: "Rohy",
     contact: "Fifandraisana",
     address: "Birao ny Kaominina, Viliahazo, Madagasikara",
