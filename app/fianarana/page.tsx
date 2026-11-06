@@ -94,7 +94,7 @@ export default async function EtablissementsPage() {
                 return (
                   <li key={item.id}>
                     <Link
-                      href={`/fianarana/${item.etablissement_id}`}
+                      href={`/fianarana/{slug}`}
                       className="group flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md"
                     >
                       {item.image_url && (
@@ -153,7 +153,7 @@ export default async function EtablissementsPage() {
                 return (
                   <li key={etab.id}>
                     <Link
-                      href={`/fianarana/${etab.id}`}
+                      href={`/fianarana/{slug}`}
                       className="group flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md"
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -219,7 +219,7 @@ export default async function EtablissementsPage() {
               {health.map((etab) => (
                 <li key={etab.id}>
                   <Link
-                    href={`/fianarana/${etab.id}`}
+                    href={`/fianarana/{slug}`}
                     className="group flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-md"
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -282,7 +282,7 @@ export default async function EtablissementsPage() {
                 return (
                   <li key={etab.id}>
                     <Link
-                      href={`/fianarana/${etab.id}`}
+                      href={`/fianarana/{slug}`}
                       className="group flex h-full flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-earth-300 hover:shadow-md"
                     >
                       <div className="flex items-start justify-between">
