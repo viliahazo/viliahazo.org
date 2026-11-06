@@ -190,13 +190,7 @@ export default async function EtablissementsPage() {
                         {etab.contact && (
                           <li className="flex items-center gap-2 text-xs text-earth-600">
                             <Phone className="h-3.5 w-3.5 shrink-0 text-indigo-500" aria-hidden />
-                            <a
-                              href={`tel:${etab.contact.replace(/\s/g, "")}`}
-                              className="hover:underline"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {etab.contact}
-                            </a>
+                            {etab.contact}
                           </li>
                         )}
                         {etab.adresse && (
@@ -260,9 +254,7 @@ export default async function EtablissementsPage() {
                       {etab.contact && (
                         <li className="flex items-center gap-2 text-xs text-earth-600">
                           <Phone className="h-3.5 w-3.5 shrink-0 text-rose-500" aria-hidden />
-                          <a href={`tel:${etab.contact.replace(/\s/g, "")}`} className="hover:underline">
-                            {etab.contact}
-                          </a>
+                          {etab.contact}
                         </li>
                       )}
                       {etab.adresse && (
