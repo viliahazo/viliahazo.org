@@ -1,27 +1,12 @@
-import type { Metadata } from "next";
 import { Clock, FileText, MapPin, Phone, Wallet } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getFokontany, getProcedures } from "@/lib/data";
 import { pick } from "@/lib/i18n";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Card, EmptyState, PageHero } from "@/components/ui";
 import { DemarcheForm } from "@/components/demarche-form";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.procedures.title,
-    description: t.procedures.subtitle,
-    path: "/taratasy",
-    keywords: [
-      "fanamarinam-ponenana",
-      "kopia taratasy",
-      "certificat de résidence",
-      "démarches Viliahazo",
-      "latsakemboka",
-    ],
-  });
-}
+export const generateMetadata = () => metadataForPath("/taratasy");
 
 export default async function ProceduresPage() {
   const { lang, t } = await getLangAndDict();

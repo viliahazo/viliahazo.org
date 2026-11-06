@@ -1,21 +1,12 @@
-import type { Metadata } from "next";
 import { BriefcaseBusiness, CalendarClock, MapPin, Phone } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getEmplois, getServices } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.jobs.title,
-    description: t.jobs.subtitle,
-    path: "/asa",
-    keywords: ["asa Viliahazo", "emploi Madagascar", "offres d'emploi", "fiofanana"],
-  });
-}
+export const generateMetadata = () => metadataForPath("/asa");
 
 export default async function JobsPage() {
   const { lang, t } = await getLangAndDict();

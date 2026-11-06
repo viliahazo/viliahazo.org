@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
 import { Bus, Clock, MapPin, Route, Wallet } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getTransport } from "@/lib/data";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Card, EmptyState, PageHero } from "@/components/ui";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.transport.title,
-    description: t.transport.subtitle,
-    path: "/fitaterana",
-    keywords: ["taxibrousse Viliahazo", "fitaterana", "horaires taxi-brousse"],
-  });
-}
+export const generateMetadata = () => metadataForPath("/fitaterana");
 
 export default async function TransportPage() {
   const { t } = await getLangAndDict();

@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Viliahazo — sehatra ofisialy ho an'ny mponina";
+export const alt =
+  "Viliahazo — kaominina ambanivohitra ao amin'ny Avaradrano, Analamanga (Madagasikara)";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -41,7 +42,7 @@ export default function OpengraphImage() {
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 40, fontWeight: 800, letterSpacing: -1 }}>Viliahazo</div>
             <div style={{ fontSize: 22, color: "#c2dfc3" }}>
-              Kaominina ambanivohitra · Madagasikara
+              Kaominina ambanivohitra · Avaradrano, Analamanga
             </div>
           </div>
         </div>
@@ -70,7 +71,7 @@ export default function OpengraphImage() {
           }}
         >
           <span>Ben&apos;ny tanàna : RANDRIAMANANTENA Gabriel Rolland</span>
-          <span>viliahazo.org</span>
+          <span>viliahazo.org · Avaradrano</span>
         </div>
       </div>
     ),

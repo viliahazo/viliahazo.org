@@ -1,23 +1,14 @@
-import type { Metadata } from "next";
 import { CalendarDays, Church, MapPin, PartyPopper, Phone } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getEvenements, getFiangonana } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDateTime } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 import { JsonLd } from "@/components/json-ld";
 import { itemListJsonLd } from "@/lib/structured-data";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.events.title,
-    description: t.events.subtitle,
-    path: "/hetsika",
-    keywords: ["hetsika Viliahazo", "événements", "fety", "tsena", "fiangonana"],
-  });
-}
+export const generateMetadata = () => metadataForPath("/hetsika");
 
 export default async function EventsPage() {
   const { lang, t } = await getLangAndDict();

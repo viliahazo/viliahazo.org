@@ -1,20 +1,11 @@
-import type { Metadata } from "next";
 import { House, Info, Phone, Users } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import { getAides } from "@/lib/data";
 import { pick } from "@/lib/i18n";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Card, EmptyState, PageHero } from "@/components/ui";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.housing.title,
-    description: t.housing.subtitle,
-    path: "/trano",
-    keywords: ["fanampiana sosialy", "trano Viliahazo", "aides sociales Madagasikara"],
-  });
-}
+export const generateMetadata = () => metadataForPath("/trano");
 
 export default async function HousingPage() {
   const { lang, t } = await getLangAndDict();

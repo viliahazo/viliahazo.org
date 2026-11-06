@@ -1,27 +1,35 @@
 import Link from "next/link";
 import { getLangAndDict } from "@/lib/lang";
 import { getFokontany } from "@/lib/data";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 import { MapPin, Phone, Mail, Users } from "lucide-react";
-import type { Metadata } from "next";
 import { SITE_ORG } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
+import { fokontanyJsonLd, fokontanySlug, webPageJsonLd } from "@/lib/structured-data";
+import { seoCopy } from "@/lib/seo";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.fokontany.title,
-    description: t.fokontany.subtitle,
-    path: "/fokontany",
-  });
-}
+export const generateMetadata = () => metadataForPath("/fokontany");
 
 export default async function FokontanyPage() {
-  const { t } = await getLangAndDict();
+  const { lang, t } = await getLangAndDict();
   const fokontany = await getFokontany();
+  const copy = seoCopy("/fokontany", lang);
 
   return (
     <>
+      <JsonLd data={fokontanyJsonLd(fokontany)} />
+      {copy && (
+        <JsonLd
+          data={webPageJsonLd({
+            path: "/fokontany",
+            name: copy.title,
+            description: copy.description,
+            lang,
+            type: "CollectionPage",
+          })}
+        />
+      )}
       <PageHero
         title={t.fokontany.title}
         subtitle={t.fokontany.subtitle}
@@ -37,7 +45,8 @@ export default async function FokontanyPage() {
             {fokontany.map((item) => (
               <li
                 key={item.id}
-                className="group flex flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-leaf-300 hover:shadow-md"
+                id={fokontanySlug(item.nom)}
+                className="group flex scroll-mt-24 flex-col rounded-2xl border border-earth-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-leaf-300 hover:shadow-md"
               >
                 {/* Header */}
                 <div className="flex items-start gap-3 mb-4">

@@ -33,22 +33,17 @@ import {
 import { pick } from "@/lib/i18n";
 import { sections } from "@/lib/sections";
 import { formatDate } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath, seoCopy } from "@/lib/seo";
 import { Badge, Card } from "@/components/ui";
+import { JsonLd } from "@/components/json-ld";
+import { webPageJsonLd } from "@/lib/structured-data";
 import { SetupNotice } from "@/components/setup-notice";
-import type { Metadata } from "next";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: `${t.home.title} — ${t.home.tagline}`,
-    description: t.home.hookText,
-    path: "/",
-  });
-}
+export const generateMetadata = () =>
+  metadataForPath("/", { absoluteTitle: true });
 
 export default async function HomePage() {
   const { lang, t } = await getLangAndDict();
+  const copy = seoCopy("/", lang);
 
   const [news, procedures, fokontany] = await Promise.all([
     getPublishedNews(3),
@@ -59,6 +54,17 @@ export default async function HomePage() {
 
   return (
     <>
+      {copy && (
+        <JsonLd
+          data={webPageJsonLd({
+            path: "/",
+            name: copy.title,
+            description: copy.description,
+            lang,
+            type: "AboutPage",
+          })}
+        />
+      )}
       <SetupNotice lang={lang} />
 
       {/* ═══════════════════════════════ HERO ═══════════════════════════════ */}

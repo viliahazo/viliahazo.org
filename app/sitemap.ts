@@ -12,6 +12,7 @@ const WEIGHTS: Record<string, { priority: number; changeFrequency: MetadataRoute
   "/fitaterana": { priority: 0.7, changeFrequency: "monthly" },
   "/asa": { priority: 0.7, changeFrequency: "weekly" },
   "/hetsika": { priority: 0.6, changeFrequency: "weekly" },
+  "/fianarana": { priority: 0.7, changeFrequency: "monthly" },
   "/mifandraisa": { priority: 0.6, changeFrequency: "monthly" },
 };
 

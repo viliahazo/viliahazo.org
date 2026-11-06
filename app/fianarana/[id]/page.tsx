@@ -54,11 +54,12 @@ async function getEtablissement(id: string): Promise<Etablissement | null> {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
-  const etab = await getEtablissement(id);
+  const [{ lang }, etab] = await Promise.all([getLangAndDict(), getEtablissement(id)]);
   if (!etab) return { title: "Introuvable" };
   return pageMetadata({
     title: etab.nom,
-    description: etab.description_mg ?? etab.nom,
+    description:
+      pick(lang, etab.description_mg, etab.description_fr) || etab.nom,
     path: `/fianarana/${id}`,
   });
 }

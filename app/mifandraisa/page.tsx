@@ -1,26 +1,33 @@
 import { getLangAndDict } from "@/lib/lang";
 import { getFokontany } from "@/lib/data";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Card, EmptyState, PageHero, inputClass, buttonClass } from "@/components/ui";
 import { MapPin, Mail, Phone, Clock, Users } from "lucide-react";
-import type { Metadata } from "next";
 import { SITE_ORG } from "@/lib/site";
+import { JsonLd } from "@/components/json-ld";
+import { webPageJsonLd } from "@/lib/structured-data";
+import { seoCopy } from "@/lib/seo";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.mifandraisa.title,
-    description: t.mifandraisa.subtitle,
-    path: "/mifandraisa",
-  });
-}
+export const generateMetadata = () => metadataForPath("/mifandraisa");
 
 export default async function MifandraisaPage() {
-  const { t } = await getLangAndDict();
+  const { lang, t } = await getLangAndDict();
   const fokontany = await getFokontany();
+  const copy = seoCopy("/mifandraisa", lang);
 
   return (
     <>
+      {copy && (
+        <JsonLd
+          data={webPageJsonLd({
+            path: "/mifandraisa",
+            name: copy.title,
+            description: copy.description,
+            lang,
+            type: "ContactPage",
+          })}
+        />
+      )}
       <PageHero
         title={t.mifandraisa.title}
         subtitle={t.mifandraisa.subtitle}

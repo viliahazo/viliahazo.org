@@ -9,11 +9,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { JsonLd } from "@/components/json-ld";
 import { localGovernmentJsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { OG_IMAGE, languageAlternates } from "@/lib/seo";
-import { SITE_NAME, SITE_ORG, SITE_URL } from "@/lib/site";
+import { FOKONTANY_NAMES, SITE_GEO, SITE_NAME, SITE_ORG, SITE_URL } from "@/lib/site";
 
-const DEFAULT_TITLE = `${SITE_NAME} — Vaovao sy serivisy ho an'ny mponina`;
-const DEFAULT_DESCRIPTION =
-  "Sehatra ofisialy ho an'ny mponina eto Viliahazo: vaovao, taratasy sy fitantanana, trano sy fanampiana sosialy, fitaterana, asa ary hetsika kolontsaina. / Plateforme officielle de la commune rurale de Viliahazo (Madagascar).";
+const DEFAULT_TITLE = `${SITE_NAME} — Tranonkala ofisialy | ${SITE_GEO.district}, ${SITE_GEO.region}`;
+const DEFAULT_DESCRIPTION = `Sehatra ofisialy ny Kaominina ambanivohitra ${SITE_NAME} (${SITE_GEO.district}, ${SITE_GEO.region}) : vaovao, taratasy, fanampiana sosialy, fitaterana, asa ary ny fokontany 8. Site officiel de la commune rurale de ${SITE_NAME}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -24,11 +23,15 @@ export const metadata: Metadata = {
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: [
-    "Viliahazo",
+    SITE_NAME,
     "kaominina Viliahazo",
     "commune rurale Viliahazo",
+    "mairie de Viliahazo",
+    "Viliahazo Avaradrano",
+    SITE_GEO.district,
+    SITE_GEO.region,
+    SITE_GEO.country,
     "Madagasikara",
-    "Madagascar",
     "vaovao Viliahazo",
     "taratasy kaominina",
     "fanamarinam-ponenana",
@@ -36,6 +39,8 @@ export const metadata: Metadata = {
     "fitaterana",
     "asa",
     "hetsika",
+    "fokontany Viliahazo",
+    ...FOKONTANY_NAMES,
   ],
   authors: [{ name: SITE_ORG.name, url: SITE_URL }],
   creator: SITE_ORG.name,
@@ -77,8 +82,10 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   formatDetection: { telephone: false, address: false, email: false },
   other: {
-    "geo.region": "MG",
-    "geo.placename": "Viliahazo",
+    "geo.region": SITE_GEO.regionCode,
+    "geo.placename": `${SITE_GEO.locality}, ${SITE_GEO.district}, ${SITE_GEO.region}, ${SITE_GEO.country}`,
+    "geo.position": `${SITE_GEO.latitude};${SITE_GEO.longitude}`,
+    ICBM: `${SITE_GEO.latitude}, ${SITE_GEO.longitude}`,
   },
 };
 

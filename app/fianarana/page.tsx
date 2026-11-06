@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -20,18 +19,11 @@ import {
 } from "@/lib/data";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Badge, Card, EmptyState, PageHero } from "@/components/ui";
 import type { EtablissementType } from "@/lib/types";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.etablissements.title,
-    description: t.etablissements.subtitle,
-    path: "/fianarana",
-  });
-}
+export const generateMetadata = () => metadataForPath("/fianarana");
 
 const TYPE_ICONS: Record<EtablissementType, typeof School> = {
   epp: BookOpen,

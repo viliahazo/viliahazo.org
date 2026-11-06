@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { AlertTriangle, Newspaper } from "lucide-react";
 import { getLangAndDict } from "@/lib/lang";
 import {
@@ -10,20 +9,12 @@ import {
 import { getSessionUser } from "@/lib/auth";
 import { pick } from "@/lib/i18n";
 import { formatDate } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
+import { metadataForPath } from "@/lib/seo";
 import { Badge, EmptyState, PageHero } from "@/components/ui";
 import { NewsForm } from "@/components/news-form";
 import { VaovaoReplies } from "@/components/vaovao-replies";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getLangAndDict();
-  return pageMetadata({
-    title: t.news.title,
-    description: t.news.subtitle,
-    path: "/vaovao",
-    keywords: ["vaovao Viliahazo", "actualités Viliahazo", "fampitandrina"],
-  });
-}
+export const generateMetadata = () => metadataForPath("/vaovao");
 
 export default async function NewsPage() {
   const { lang, t } = await getLangAndDict();
